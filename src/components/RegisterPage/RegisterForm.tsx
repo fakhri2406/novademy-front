@@ -61,28 +61,33 @@ const RegisterForm: React.FC = () => {
       
       // Check if we have a user ID in the response data
       if (response.status === 201 || response.status === 200) {
-        // Try different possible locations for the user ID
-        const userId = response.data?.id || 
-                      response.data?.userId || 
-                      response.data?.user?.id || 
-                      response.data?.data?.id ||
-                      (typeof response.data === 'string' ? response.data : null);
+        // Extract userId from the response message
+        let userId: string | null = null;
         
-        console.log('Attempted to extract userId:', {
-          fromId: response.data?.id,
-          fromUserId: response.data?.userId,
-          fromUserObject: response.data?.user?.id,
-          fromDataObject: response.data?.data?.id,
-          fromString: typeof response.data === 'string' ? response.data : null
-        });
+        if (typeof response.data === 'string' && response.data.includes('User with ID')) {
+          const match = response.data.match(/User with ID ([^ ]+)/);
+          if (match) {
+            userId = match[1];
+            console.log('Found userId in response message:', userId);
+          }
+        }
         
         if (!userId) {
           console.error('No user ID found in response data. Full response:', response.data);
           throw new Error('Could not find user ID in server response');
         }
         
+        // Clean up the userId
+        userId = userId.trim().toLowerCase();
+        
+        // Validate GUID format
+        if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+          console.error('Invalid userId format:', userId);
+          throw new Error('Invalid user ID format received from server');
+        }
+        
         console.log('Successfully extracted userId:', userId);
-        navigate('/verify-email', { state: { userId: userId.toString() } });
+        navigate('/verify-email', { state: { userId } });
       } else {
         console.error('Unexpected status code:', response.status);
         console.error('Response data:', response.data);

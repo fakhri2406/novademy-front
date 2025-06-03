@@ -79,10 +79,8 @@ const EmailVerificationPage: React.FC = () => {
       });
 
       const response = await api.post('/auth/verify-email', {
-        request: {
-          userId: userId.toLowerCase(),
-          code: cleanCode
-        }
+        userId: userId.toLowerCase(),
+        code: cleanCode
       });
 
       console.log('Verification response:', response.data);

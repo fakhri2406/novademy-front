@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Alert, Spinner } from 'react-bootstrap';
 import api from '../services/api';
@@ -52,24 +52,78 @@ const EmailVerificationPage: React.FC = () => {
       return;
     }
 
+    // Ensure userId is a valid GUID
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+      console.error('Invalid userId format in verifyEmail:', userId);
+      setMessage({ text: 'Invalid user ID format. Please register again.', type: 'danger' });
+      setTimeout(() => navigate('/register'), 3000);
+      return;
+    }
+
+    // Ensure code is exactly 4 digits
+    const cleanCode = verificationCode.replace(/\D/g, '');
+    if (!/^\d{4}$/.test(cleanCode)) {
+      console.error('Invalid code format in verifyEmail:', verificationCode);
+      setMessage({ text: 'Invalid verification code format. Expected exactly 4 digits.', type: 'danger' });
+      return;
+    }
+
     setIsLoading(true);
     setMessage(null);
 
     try {
-      const response = await api.post('/auth/verify-email', {
-        userId: userId,
-        code: verificationCode
+      console.log('Sending verification request:', {
+        userId,
+        code: cleanCode,
+        endpoint: '/auth/verify-email'
       });
+
+      const response = await api.post('/auth/verify-email', {
+        request: {
+          userId: userId.toLowerCase(),
+          code: cleanCode
+        }
+      });
+
+      console.log('Verification response:', response.data);
 
       if (response.status === 200) {
         setMessage({ text: 'Email verified successfully! Redirecting to login...', type: 'success' });
         setTimeout(() => navigate('/login'), 2000);
       }
     } catch (error: any) {
-      setMessage({ 
-        text: error.response?.data?.message || 'Verification failed. Please check the code and try again.', 
-        type: 'danger' 
+      console.error('Verification error details:', {
+        message: error.message,
+        response: {
+          status: error.response?.status,
+          data: error.response?.data,
+          headers: error.response?.headers
+        },
+        request: {
+          userId,
+          code: cleanCode
+        }
       });
+
+      if (error.response?.data) {
+        // Handle specific error messages from the API
+        const errorMessage = typeof error.response.data === 'string' 
+          ? error.response.data 
+          : error.response.data.message || JSON.stringify(error.response.data);
+
+        if (errorMessage.includes('Invalid verification code')) {
+          setMessage({ text: 'The verification code is incorrect. Please check your email and try again.', type: 'danger' });
+        } else if (errorMessage.includes('expired')) {
+          setMessage({ text: 'The verification code has expired. Please request a new one.', type: 'danger' });
+        } else if (errorMessage.includes('already verified')) {
+          setMessage({ text: 'This email is already verified. You can now login.', type: 'info' });
+          setTimeout(() => navigate('/login'), 2000);
+        } else {
+          setMessage({ text: errorMessage, type: 'danger' });
+        }
+      } else {
+        setMessage({ text: 'Verification failed. Please try again.', type: 'danger' });
+      }
     } finally {
       setIsLoading(false);
     }

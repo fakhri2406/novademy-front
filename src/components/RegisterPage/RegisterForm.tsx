@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -31,6 +33,7 @@ const RegisterForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('Username', username);
     formData.append('Password', password);
@@ -46,11 +49,66 @@ const RegisterForm: React.FC = () => {
     }
 
     try {
-      await api.post('/auth/register', formData);
-      navigate('/login');
-    } catch (err) {
+      const response = await api.post('/auth/register', formData);
+      console.log('Full registration response:', response);
+      console.log('Response data:', response.data);
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      
+      // Log the exact structure of response.data
+      console.log('Response data type:', typeof response.data);
+      console.log('Response data keys:', Object.keys(response.data));
+      
+      // Check if we have a user ID in the response data
+      if (response.status === 201 || response.status === 200) {
+        // Extract userId from the response message
+        let userId: string | null = null;
+        
+        if (typeof response.data === 'string' && response.data.includes('User with ID')) {
+          const match = response.data.match(/User with ID ([^ ]+)/);
+          if (match) {
+            userId = match[1];
+            console.log('Found userId in response message:', userId);
+          }
+        }
+        
+        if (!userId) {
+          console.error('No user ID found in response data. Full response:', response.data);
+          throw new Error('Could not find user ID in server response');
+        }
+        
+        // Clean up the userId
+        userId = userId.trim().toLowerCase();
+        
+        // Validate GUID format
+        if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+          console.error('Invalid userId format:', userId);
+          throw new Error('Invalid user ID format received from server');
+        }
+        
+        console.log('Successfully extracted userId:', userId);
+        navigate('/verify-email', { state: { userId } });
+      } else {
+        console.error('Unexpected status code:', response.status);
+        console.error('Response data:', response.data);
+        throw new Error(`Unexpected response status: ${response.status}`);
+      }
+    } catch (err: any) {
       console.error('Registration failed:', err);
-      setError('Registration failed. Please try again.');
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        headers: err.response?.headers
+      });
+      setError(
+        err.response?.data?.message || 
+        err.response?.data || 
+        err.message || 
+        'Registration failed. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,14 +125,27 @@ const RegisterForm: React.FC = () => {
             required
           />
         </Form.Group>
-        <Form.Group controlId="password">
+        <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <InputGroup>
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+            >
+              {showPassword ? (
+                <i className="bi bi-eye-slash"></i>
+              ) : (
+                <i className="bi bi-eye"></i>
+              )}
+            </Button>
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="firstName">
           <Form.Label>First Name</Form.Label>
@@ -146,8 +217,26 @@ const RegisterForm: React.FC = () => {
             onChange={handleFileChange}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Register
+        <Button 
+          variant="primary" 
+          type="submit" 
+          disabled={isLoading}
+          className="d-flex align-items-center justify-content-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span>Registering...</span>
+            </>
+          ) : (
+            'Register'
+          )}
         </Button>
       </Form>
     </>

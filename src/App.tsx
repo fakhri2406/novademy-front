@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import PackageSelectionPage from './pages/PackageSelectionPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
+import EmailVerificationPage from './pages/EmailVerificationPage';
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/packages" element={<PackageSelectionPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/verify-email" element={<EmailVerificationPage />} />
         </Routes>
       </Router>
   );

@@ -51,7 +51,9 @@ interface LessonResponse {
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [packages, setPackages] = useState<PackageResponse[]>([]);
     const [courses, setCourses] = useState<CourseResponse[]>([]);
     const [lessonsMap, setLessonsMap] = useState<Record<string, LessonResponse[]>>({});

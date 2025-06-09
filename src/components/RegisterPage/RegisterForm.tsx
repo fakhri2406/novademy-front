@@ -41,7 +41,6 @@ const RegisterForm: React.FC = () => {
     formData.append('LastName', lastName);
     formData.append('Email', email);
     formData.append('PhoneNumber', phoneNumber);
-    formData.append('RoleId', '3');
     formData.append('Group', group.toString());
     formData.append('Sector', sectorMap[sector].toString());
     if (profilePicture) {
@@ -55,13 +54,10 @@ const RegisterForm: React.FC = () => {
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);
       
-      // Log the exact structure of response.data
       console.log('Response data type:', typeof response.data);
       console.log('Response data keys:', Object.keys(response.data));
       
-      // Check if we have a user ID in the response data
       if (response.status === 201 || response.status === 200) {
-        // Extract userId from the response message
         let userId: string | null = null;
         
         if (typeof response.data === 'string' && response.data.includes('User with ID')) {
@@ -77,10 +73,8 @@ const RegisterForm: React.FC = () => {
           throw new Error('Could not find user ID in server response');
         }
         
-        // Clean up the userId
         userId = userId.trim().toLowerCase();
         
-        // Validate GUID format
         if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
           console.error('Invalid userId format:', userId);
           throw new Error('Invalid user ID format received from server');

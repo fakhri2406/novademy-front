@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken, setRefreshToken, getUserIdFromToken } from '../../utils/auth';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -50,14 +51,27 @@ const LoginForm: React.FC = () => {
             required
           />
         </Form.Group>
-        <Form.Group controlId="password">
+        <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <InputGroup>
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+            >
+              {showPassword ? (
+                <i className="bi bi-eye-slash"></i>
+              ) : (
+                <i className="bi bi-eye"></i>
+              )}
+            </Button>
+          </InputGroup>
         </Form.Group>
         <Button variant="primary" type="submit">
           Login

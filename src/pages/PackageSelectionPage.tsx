@@ -3,7 +3,6 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPackages } from '../features/packages/packagesSlice';
 import { RootState, AppDispatch } from '../store';
-import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { getUserIdFromToken } from '../utils/auth';
 
@@ -11,7 +10,7 @@ const PackageSelectionPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { packages, status, error } = useSelector((state: RootState) => state.packages);
   const navigate = useNavigate();
-  const [subscribing, setSubscribing] = useState<{ [key: string]: boolean }>({});
+  const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (status === 'idle') {
@@ -19,21 +18,21 @@ const PackageSelectionPage: React.FC = () => {
     }
   }, [status, dispatch]);
 
-  const userId = getUserIdFromToken();
-
-  const handleSubscribe = async (packageId: string) => {
-    if (!userId) {
-      console.error('User not authenticated');
-      return;
-    }
-    setSubscribing((prev) => ({ ...prev, [packageId]: true }));
+  const handleSelectPackage = (packageId: string, packageTitle: string, price: number) => {
+    setLoading((prev) => ({ ...prev, [packageId]: true }));
     try {
-      await api.post('/subscription', { userId, packageId });
-      navigate('/dashboard');
+      // Navigate to payment page with package details
+      navigate('/payment', {
+        state: {
+          packageId,
+          packageName: packageTitle,
+          amount: price
+        }
+      });
     } catch (err) {
-      console.error('Subscription failed:', err);
+      console.error('Failed to process package selection:', err);
     } finally {
-      setSubscribing((prev) => ({ ...prev, [packageId]: false }));
+      setLoading((prev) => ({ ...prev, [packageId]: false }));
     }
   };
 
@@ -55,14 +54,14 @@ const PackageSelectionPage: React.FC = () => {
               <Card.Body>
                 <Card.Title>{pkg.title}</Card.Title>
                 <Card.Text>{pkg.description}</Card.Text>
-                <Card.Text>Price: ${pkg.price}</Card.Text>
+                <Card.Text>Price: {pkg.price} AZN</Card.Text>
                 <Button
                   variant="primary"
-                  disabled={subscribing[pkg.id]}
-                  onClick={() => handleSubscribe(pkg.id)}
-                  className="mt-2"
+                  disabled={loading[pkg.id]}
+                  onClick={() => handleSelectPackage(pkg.id, pkg.title, pkg.price)}
+                  className="mt-2 w-100"
                 >
-                  {subscribing[pkg.id] ? 'Subscribing...' : 'Select'}
+                  {loading[pkg.id] ? 'Processing...' : 'Buy Now'}
                 </Button>
               </Card.Body>
             </Card>

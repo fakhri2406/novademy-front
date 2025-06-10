@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner, Alert } from 'react-bootstrap';
 import { Chatbot } from '../components/Dashboard/Chatbot';
 import api from '../services/api';
 import { getUserIdFromToken } from '../utils/auth';
@@ -51,9 +51,8 @@ interface LessonResponse {
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [error, setError] = useState<string | null>(null);
     const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [packages, setPackages] = useState<PackageResponse[]>([]);
     const [courses, setCourses] = useState<CourseResponse[]>([]);
     const [lessonsMap, setLessonsMap] = useState<Record<string, LessonResponse[]>>({});
@@ -70,30 +69,60 @@ const DashboardPage: React.FC = () => {
 
         const fetchData = async () => {
             try {
+                setError(null);
+                console.log('Fetching subscriptions for user:', userId);
+                
                 const subRes = await api.get<SubscriptionResponse[]>(`/subscription/active/${userId}`);
                 const subs = subRes.data;
+                console.log('Active subscriptions:', subs);
+                
+                if (subs.length === 0) {
+                    setError('You don\'t have any active subscriptions. Please purchase a package to access lessons.');
+                    setLoading(false);
+                    return;
+                }
+                
                 setSubscriptions(subs);
 
+                console.log('Fetching package details...');
                 const pkgPromises = subs.map(sub => api.get<PackageResponse>(`/package/${sub.packageId}`));
                 const pkgResults = await Promise.all(pkgPromises);
                 const pkgs = pkgResults.map(res => res.data);
+                console.log('Packages:', pkgs);
                 setPackages(pkgs);
 
                 const courseIds = Array.from(new Set(pkgs.flatMap(p => p.courseIds)));
+                console.log('Course IDs:', courseIds);
+                
+                if (courseIds.length === 0) {
+                    setError('No courses found in your packages. Please contact support.');
+                    setLoading(false);
+                    return;
+                }
+
+                console.log('Fetching course details...');
                 const coursePromises = courseIds.map(cid => api.get<CourseResponse>(`/course/${cid}`));
                 const courseResults = await Promise.all(coursePromises);
                 const crs = courseResults.map(res => res.data);
+                console.log('Courses:', crs);
                 setCourses(crs);
 
                 if (crs.length > 0) {
                     setSelectedCourseId(crs[0].id);
                 }
 
+                console.log('Fetching lessons...');
                 const lessonsMapTemp: Record<string, LessonResponse[]> = {};
                 await Promise.all(crs.map(async c => {
-                    const lessonsRes = await api.get<LessonResponse[]>(`/lesson/course/${c.id}`);
-                    const sortedLessons = lessonsRes.data.sort((a, b) => a.order - b.order);
-                    lessonsMapTemp[c.id] = sortedLessons;
+                    try {
+                        const lessonsRes = await api.get<LessonResponse[]>(`/lesson/course/${c.id}`);
+                        const sortedLessons = lessonsRes.data.sort((a, b) => a.order - b.order);
+                        lessonsMapTemp[c.id] = sortedLessons;
+                        console.log(`Lessons for course ${c.id}:`, sortedLessons);
+                    } catch (err) {
+                        console.error(`Failed to fetch lessons for course ${c.id}:`, err);
+                        lessonsMapTemp[c.id] = [];
+                    }
                 }));
                 setLessonsMap(lessonsMapTemp);
 
@@ -105,6 +134,7 @@ const DashboardPage: React.FC = () => {
                 }
             } catch (err) {
                 console.error('Failed to load dashboard data:', err);
+                setError('Failed to load your courses and lessons. Please try refreshing the page.');
             } finally {
                 setLoading(false);
             }
@@ -117,19 +147,52 @@ const DashboardPage: React.FC = () => {
         return (
             <div className="text-center mt-5">
                 <Spinner animation="border" />
+                <p className="mt-2">Loading your courses and lessons...</p>
             </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className="mt-4">
+                <Alert variant="warning">
+                    <Alert.Heading>Unable to load lessons</Alert.Heading>
+                    <p>{error}</p>
+                    {error.includes('subscriptions') && (
+                        <Button 
+                            variant="primary" 
+                            onClick={() => navigate('/packages')}
+                            className="mt-2"
+                        >
+                            View Available Packages
+                        </Button>
+                    )}
+                </Alert>
+            </Container>
         );
     }
 
     const courseLessons = lessonsMap[selectedCourseId] || [];
     const selectedLesson = courseLessons.find(l => l.id === selectedLessonId);
 
+    if (courses.length === 0) {
+        return (
+            <Container className="mt-4">
+                <Alert variant="info">
+                    <Alert.Heading>No Courses Available</Alert.Heading>
+                    <p>There are no courses available in your packages at the moment.</p>
+                </Alert>
+            </Container>
+        );
+    }
+
     return (
         <div>
             <Container fluid className="mt-4">
                 <Row className="mb-3">
                     <Col>
-                        <ButtonGroup>
+                        <h2>Your Courses</h2>
+                        <ButtonGroup className="mb-4">
                             {courses.map(c => (
                                 <Button
                                     key={c.id}
@@ -150,30 +213,51 @@ const DashboardPage: React.FC = () => {
                 </Row>
                 <Row>
                     <Col md={3}>
-                        <ListGroup>
-                            {courseLessons.map(l => (
-                                <ListGroup.Item
-                                    key={l.id}
-                                    action
-                                    active={l.id === selectedLessonId}
-                                    onClick={() => setSelectedLessonId(l.id)}
-                                >
-                                    {l.title}
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
+                        <h3>Lessons</h3>
+                        {courseLessons.length === 0 ? (
+                            <Alert variant="info">No lessons available for this course.</Alert>
+                        ) : (
+                            <ListGroup>
+                                {courseLessons.map(l => (
+                                    <ListGroup.Item
+                                        key={l.id}
+                                        action
+                                        active={l.id === selectedLessonId}
+                                        onClick={() => setSelectedLessonId(l.id)}
+                                    >
+                                        {l.title}
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        )}
                     </Col>
                     <Col md={6}>
                         {selectedLesson ? (
                             <>
                                 <h2>{selectedLesson.title}</h2>
                                 <div className="mb-3">
-                                    <video src={selectedLesson.videoUrl} controls className="w-100" />
+                                    <video 
+                                        src={selectedLesson.videoUrl} 
+                                        controls 
+                                        className="w-100"
+                                        poster={selectedLesson.imageUrl}
+                                    />
                                 </div>
-                                <div>{selectedLesson.transcript}</div>
+                                <div className="lesson-description">
+                                    <h4>Description</h4>
+                                    <p>{selectedLesson.description}</p>
+                                </div>
+                                {selectedLesson.transcript && (
+                                    <div className="lesson-transcript mt-4">
+                                        <h4>Transcript</h4>
+                                        <p>{selectedLesson.transcript}</p>
+                                    </div>
+                                )}
                             </>
                         ) : (
-                            <div>Select a lesson to view</div>
+                            <Alert variant="info">
+                                Select a lesson from the list to start learning
+                            </Alert>
                         )}
                     </Col>
                     <Col md={3}>

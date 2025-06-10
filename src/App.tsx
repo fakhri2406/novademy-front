@@ -8,6 +8,7 @@ import PackageSelectionPage from './pages/PackageSelectionPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import EmailVerificationPage from './pages/EmailVerificationPage';
+import Payment from './pages/Payment';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </div>
     </Router>

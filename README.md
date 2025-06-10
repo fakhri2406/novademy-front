@@ -1,6 +1,6 @@
-# Novademy Frontend
+## Novademy Frontend
 
-Welcome to the **Novademy Frontend**, the dynamic and user-friendly interface for [**Novademy**](https://github.com/fakhri2406/Novademy.git), an innovative online education platform designed for Azerbaijani students preparing for academic exams. It is accessible at [novademy.az](https://novademy.az), delivering a responsive and intuitive learning environment to students across Azerbaijan.
+This is a dynamic and user-friendly interface for [**Novademy**](https://github.com/fakhri2406/Novademy.git), an innovative online education platform designed for Azerbaijani students preparing for academic exams. It is accessible at [novademy.az](https://novademy.az), delivering a responsive and intuitive learning environment to students across Azerbaijan.
 
 ## 🏗️ Project Structure
 

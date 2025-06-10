@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Spinner, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
 
@@ -108,130 +108,157 @@ const RegisterForm: React.FC = () => {
 
   return (
     <>
-      {error && <div className="text-danger mb-2">{error}</div>}
+      {error && <div className="text-danger mb-3">{error}</div>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="password" className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <Button
-              variant="outline-secondary"
-              onClick={() => setShowPassword(!showPassword)}
-              type="button"
+        <div className="row">
+          {/* Left Column */}
+          <div className="col-md-6">
+            <Form.Group controlId="username" className="mb-3">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="password" className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => setShowPassword(!showPassword)}
+                  type="button"
+                >
+                  {showPassword ? (
+                    <i className="bi bi-eye-slash"></i>
+                  ) : (
+                    <i className="bi bi-eye"></i>
+                  )}
+                </Button>
+              </InputGroup>
+            </Form.Group>
+
+            <Form.Group controlId="firstName" className="mb-3">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="lastName" className="mb-3">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </Form.Group>
+          </div>
+
+          {/* Right Column */}
+          <div className="col-md-6">
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="phoneNumber" className="mb-3">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="group" className="mb-3">
+              <Form.Label>Group</Form.Label>
+              <Form.Control
+                as="select"
+                value={group}
+                onChange={(e) => setGroup(Number(e.target.value))}
+                required
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="sector" className="mb-3">
+              <Form.Label>Sector</Form.Label>
+              <Form.Control
+                as="select"
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
+                required
+              >
+                <option value="AZ">AZ</option>
+                <option value="RU">RU</option>
+                <option value="EN">EN</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="profilePicture" className="mb-3">
+              <Form.Label>Profile Picture</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
+          </div>
+        </div>
+
+        <div className="row mt-3">
+          <div className="col-12">
+            <Button 
+              variant="primary" 
+              type="submit" 
+              disabled={isLoading}
+              className="w-100 d-flex align-items-center justify-content-center gap-2 mb-3"
             >
-              {showPassword ? (
-                <i className="bi bi-eye-slash"></i>
+              {isLoading ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span>Registering...</span>
+                </>
               ) : (
-                <i className="bi bi-eye"></i>
+                'Register'
               )}
             </Button>
-          </InputGroup>
-        </Form.Group>
-        <Form.Group controlId="firstName">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="lastName">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="phoneNumber">
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="group">
-          <Form.Label>Group</Form.Label>
-          <Form.Control
-            as="select"
-            value={group}
-            onChange={(e) => setGroup(Number(e.target.value))}
-            required
-          >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="sector">
-          <Form.Label>Sector</Form.Label>
-          <Form.Control
-            as="select"
-            value={sector}
-            onChange={(e) => setSector(e.target.value)}
-            required
-          >
-            <option value="AZ">AZ</option>
-            <option value="RU">RU</option>
-            <option value="EN">EN</option>
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="profilePicture">
-          <Form.Label>Profile Picture</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={handleFileChange}
-          />
-        </Form.Group>
-        <Button 
-          variant="primary" 
-          type="submit" 
-          disabled={isLoading}
-          className="d-flex align-items-center justify-content-center gap-2"
-        >
-          {isLoading ? (
-            <>
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-              <span>Registering...</span>
-            </>
-          ) : (
-            'Register'
-          )}
-        </Button>
+            <div className="text-center">
+              <small className="text-muted">
+                Already have an account?{' '}
+                <Link to="/login" className="text-decoration-none">Login here</Link>
+              </small>
+            </div>
+          </div>
+        </div>
       </Form>
     </>
   );

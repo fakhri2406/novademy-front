@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { setAccessToken, setRefreshToken, getUserIdFromToken } from '../../utils/auth';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
@@ -42,7 +42,7 @@ const LoginForm: React.FC = () => {
     <>
       {error && <div className="text-danger mb-2">{error}</div>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="username">
+        <Form.Group controlId="username" className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
             required
           />
         </Form.Group>
-        <Form.Group controlId="password" className="mb-3">
+        <Form.Group controlId="password" className="mb-4">
           <Form.Label>Password</Form.Label>
           <InputGroup>
             <Form.Control
@@ -73,9 +73,15 @@ const LoginForm: React.FC = () => {
             </Button>
           </InputGroup>
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="w-100 mb-3">
           Login
         </Button>
+        <div className="text-center">
+          <small className="text-muted">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-decoration-none">Register here</Link>
+          </small>
+        </div>
       </Form>
     </>
   );

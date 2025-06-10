@@ -28,7 +28,12 @@ const PackageSection: React.FC = () => {
             <Row>
                 {packages.map((pkg) => (
                     <Col key={pkg.id} md={4}>
-                        <PackageCard title={pkg.title} description={pkg.description} price={pkg.price} />
+                        <PackageCard 
+                            id={pkg.id}
+                            title={pkg.title} 
+                            description={pkg.description} 
+                            price={pkg.price} 
+                        />
                     </Col>
                 ))}
             </Row>

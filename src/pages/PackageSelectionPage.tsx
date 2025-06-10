@@ -51,7 +51,7 @@ const PackageSelectionPage: React.FC = () => {
       <Row>
         {packages.map((pkg) => (
           <Col key={pkg.id} md={4} className="mb-4">
-            <Card>
+            <Card className="h-100">
               <Card.Body>
                 <Card.Title>{pkg.title}</Card.Title>
                 <Card.Text>{pkg.description}</Card.Text>
@@ -60,6 +60,7 @@ const PackageSelectionPage: React.FC = () => {
                   variant="primary"
                   disabled={subscribing[pkg.id]}
                   onClick={() => handleSubscribe(pkg.id)}
+                  className="mt-2"
                 >
                   {subscribing[pkg.id] ? 'Subscribing...' : 'Select'}
                 </Button>

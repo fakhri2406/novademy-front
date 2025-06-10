@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner } from 'react-bootstrap';
-import DashboardNavbar from '../components/Dashboard/DashboardNavbar';
+import { Chatbot } from '../components/Dashboard/Chatbot';
 import api from '../services/api';
 import { getUserIdFromToken } from '../utils/auth';
 
@@ -126,7 +126,6 @@ const DashboardPage: React.FC = () => {
 
     return (
         <div>
-            <DashboardNavbar />
             <Container fluid className="mt-4">
                 <Row className="mb-3">
                     <Col>
@@ -164,7 +163,7 @@ const DashboardPage: React.FC = () => {
                             ))}
                         </ListGroup>
                     </Col>
-                    <Col md={9}>
+                    <Col md={6}>
                         {selectedLesson ? (
                             <>
                                 <h2>{selectedLesson.title}</h2>
@@ -175,6 +174,13 @@ const DashboardPage: React.FC = () => {
                             </>
                         ) : (
                             <div>Select a lesson to view</div>
+                        )}
+                    </Col>
+                    <Col md={3}>
+                        {selectedLesson && (
+                            <div className="sticky-top" style={{ top: '20px' }}>
+                                <Chatbot lessonId={selectedLesson.id} />
+                            </div>
                         )}
                     </Col>
                 </Row>

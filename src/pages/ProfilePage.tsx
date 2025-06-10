@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Card, Button } from 'react-bootstrap';
-import DashboardNavbar from '../components/Dashboard/DashboardNavbar';
 import { getAccessToken, decodeToken } from '../utils/auth';
 
 const ProfilePage: React.FC = () => {
@@ -30,33 +29,30 @@ const ProfilePage: React.FC = () => {
     const sector = sectorCode ? sectorMap[sectorCode] || sectorCode : '';
 
     return (
-        <>
-            <DashboardNavbar />
-            <Container className="d-flex justify-content-center mt-5">
-                <Card style={{ width: '24rem' }}>
-                    <Card.Body>
-                        <Card.Title>Profile</Card.Title>
-                        {profilePictureUrl && (
-                            <div className="text-center mb-3">
-                                <img
-                                    src={profilePictureUrl}
-                                    alt="Profile"
-                                    className="rounded-circle"
-                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                                />
-                            </div>
-                        )}
-                        <Card.Text><strong>Username:</strong> {username}</Card.Text>
-                        <Card.Text><strong>Name:</strong> {firstName} {lastName}</Card.Text>
-                        <Card.Text><strong>Email:</strong> {email}</Card.Text>
-                        <Card.Text><strong>Phone Number:</strong> {phoneNumber}</Card.Text>
-                        <Card.Text><strong>Group:</strong> {group}</Card.Text>
-                        <Card.Text><strong>Sector:</strong> {sector}</Card.Text>
-                        <Button variant="secondary" onClick={() => navigate('/dashboard')}>Go back</Button>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </>
+        <Container className="d-flex justify-content-center mt-5">
+            <Card style={{ width: '24rem' }}>
+                <Card.Body>
+                    <Card.Title>Profile</Card.Title>
+                    {profilePictureUrl && (
+                        <div className="text-center mb-3">
+                            <img
+                                src={profilePictureUrl}
+                                alt="Profile"
+                                className="rounded-circle"
+                                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                            />
+                        </div>
+                    )}
+                    <Card.Text><strong>Username:</strong> {username}</Card.Text>
+                    <Card.Text><strong>Name:</strong> {firstName} {lastName}</Card.Text>
+                    <Card.Text><strong>Email:</strong> {email}</Card.Text>
+                    <Card.Text><strong>Phone Number:</strong> {phoneNumber}</Card.Text>
+                    <Card.Text><strong>Group:</strong> {group}</Card.Text>
+                    <Card.Text><strong>Sector:</strong> {sector}</Card.Text>
+                    <Button variant="secondary" onClick={() => navigate('/dashboard')}>Go back</Button>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 };
 

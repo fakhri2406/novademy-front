@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/LandingPage/Navbar';
 import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
@@ -10,7 +11,9 @@ import EmailVerificationPage from './pages/EmailVerificationPage';
 
 const App: React.FC = () => {
   return (
-      <Router>
+    <Router>
+      <div>
+        <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -20,7 +23,8 @@ const App: React.FC = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
         </Routes>
-      </Router>
+      </div>
+    </Router>
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner } from 'react-bootstrap';
-import DashboardNavbar from '../components/Dashboard/DashboardNavbar';
 import { Chatbot } from '../components/Dashboard/Chatbot';
 import api from '../services/api';
 import { getUserIdFromToken } from '../utils/auth';
@@ -127,7 +126,6 @@ const DashboardPage: React.FC = () => {
 
     return (
         <div>
-            <DashboardNavbar />
             <Container fluid className="mt-4">
                 <Row className="mb-3">
                     <Col>

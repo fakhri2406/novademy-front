@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAccessToken } from '../utils/auth';
 import Navbar from '../components/LandingPage/Navbar';
 import Hero from '../components/LandingPage/Hero';
 import PromoSection from '../components/LandingPage/PromoSection';

@@ -1,0 +1,41 @@
+.hero-section {
+    position: relative;
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    min-height: 75vh;
+    width: 100%;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    display: flex;
+    align-items: center;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.carousel-item img {
+    height: 300px; /* Adjust the height as needed */
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 60vh;
+    }
+    
+    .min-vh-75 {
+        min-height: 60vh;
+    }
+} 

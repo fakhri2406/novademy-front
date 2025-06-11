@@ -1,0 +1,131 @@
+/* Remove gradient from body and #root */
+/* body, #root, .login-bg { ... } */
+
+.login-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #c33764 0%, #1d2671 100%);
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 40px;
+  padding: 48px 32px;
+  max-width: 700px;
+  width: 100%;
+  margin: 40px auto;
+}
+
+.login-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #22223b;
+  text-align: left;
+}
+
+.form-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #22223b;
+}
+
+.form-control {
+  border-radius: 12px;
+  font-size: 1.1rem;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+}
+
+.btn-login, .btn-primary {
+  background: #c33764;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  border: none;
+  width: 100%;
+  margin: 18px 0 10px 0;
+  transition: background 0.2s;
+}
+
+.btn-login:hover, .btn-primary:hover {
+  background: #a8325e;
+}
+
+.login-link,
+.login-link:visited {
+  color: #22223b;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.login-link-bold {
+  font-weight: 700;
+  text-decoration: underline;
+  color: #22223b;
+}
+
+.login-forgot {
+  color: #22223b;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Remove default card shadow from Bootstrap if present */
+.card.shadow-sm {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Style the see password button in the input group */
+.input-group .form-control,
+.input-group .btn {
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  box-sizing: border-box;
+}
+.input-group .btn {
+  border: none;
+  background: transparent;
+  color: #c33764;
+  border-radius: 0 12px 12px 0;
+  box-shadow: none;
+  transition: background 0.2s, color 0.2s;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input-group .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.input-group .btn:hover {
+  background: #f8e1ef;
+  color: #a8325e;
+}
+.input-group .form-control {
+  border-radius: 12px 0 0 12px;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    max-width: 98vw;
+    padding: 32px 8px;
+  }
+  .input-group .btn, .input-group .form-control {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+  }
+} 

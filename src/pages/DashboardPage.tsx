@@ -183,6 +183,30 @@ const DashboardPage: React.FC = () => {
 
     return (
         <Container className="mt-5">
+            <div style={{ marginBottom: 32, fontSize: '1.1rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span
+                    style={{ color: !selectedPackageId ? '#c33764' : '#222', cursor: !selectedPackageId ? 'default' : 'pointer', fontWeight: !selectedPackageId ? 700 : 500 }}
+                    onClick={() => { setSelectedPackageId(null); setSelectedCourse(null); setSelectedLesson(null); }}
+                >Paketlər</span>
+                {selectedPackageId && <>
+                    <span style={{ color: '#888' }}>{'>'}</span>
+                    <span
+                        style={{ color: selectedPackageId && !selectedCourse ? '#c33764' : '#222', cursor: selectedPackageId && !selectedCourse ? 'default' : 'pointer', fontWeight: selectedPackageId && !selectedCourse ? 700 : 500 }}
+                        onClick={() => { setSelectedCourse(null); setSelectedLesson(null); }}
+                    >{uniquePackages.find(pkg => pkg.id === selectedPackageId)?.title || 'Kurslar'}</span>
+                </>}
+                {selectedCourse && <>
+                    <span style={{ color: '#888' }}>{'>'}</span>
+                    <span
+                        style={{ color: selectedCourse && !selectedLesson ? '#c33764' : '#222', cursor: selectedCourse && !selectedLesson ? 'default' : 'pointer', fontWeight: selectedCourse && !selectedLesson ? 700 : 500 }}
+                        onClick={() => { setSelectedLesson(null); }}
+                    >{selectedCourse.title}</span>
+                </>}
+                {selectedLesson && <>
+                    <span style={{ color: '#888' }}>{'>'}</span>
+                    <span style={{ color: '#c33764', fontWeight: 700 }}>{selectedLesson.title}</span>
+                </>}
+            </div>
             {/* Step 1: Packages */}
             {!selectedPackageId && (
                 <div>

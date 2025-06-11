@@ -242,21 +242,33 @@ const DashboardPage: React.FC = () => {
                 <div>
                     <h2>Kurslar</h2>
                     <Button variant="link" onClick={() => setSelectedPackageId(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
                         {uniquePackages.find(pkg => pkg.id === selectedPackageId)?.courseIds.map(courseId => {
                             const course = courses.find(c => c.id === courseId);
                             if (!course) return null;
                             return (
-                                <li
+                                <div
                                     key={courseId}
-                                    style={{ cursor: 'pointer', padding: '12px 0', fontWeight: 600, color: '#c33764' }}
+                                    style={{
+                                        border: '1px solid #e0e0e0',
+                                        borderRadius: 16,
+                                        padding: 24,
+                                        minWidth: 220,
+                                        maxWidth: 320,
+                                        background: '#fff',
+                                        boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
+                                        cursor: 'pointer',
+                                        transition: 'border 0.2s, box-shadow 0.2s',
+                                        fontWeight: 500
+                                    }}
                                     onClick={() => { setSelectedCourse(course); setSelectedLesson(null); }}
                                 >
-                                    {course.title}
-                                </li>
+                                    <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 8 }}>{course.title}</div>
+                                    <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{course.description}</div>
+                                </div>
                             );
                         })}
-                    </ul>
+                    </div>
                 </div>
             )}
             {/* Step 3: Lessons */}
@@ -264,17 +276,30 @@ const DashboardPage: React.FC = () => {
                 <div>
                     <h2>Dərslər</h2>
                     <Button variant="link" onClick={() => setSelectedCourse(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
                         {(lessonsMap[selectedCourse.id] || []).map(lesson => (
-                            <li
+                            <div
                                 key={lesson.id}
-                                style={{ cursor: 'pointer', padding: '12px 0', fontWeight: 600, color: '#c33764' }}
+                                style={{
+                                    border: '1px solid #e0e0e0',
+                                    borderRadius: 16,
+                                    padding: 24,
+                                    minWidth: 220,
+                                    maxWidth: 320,
+                                    background: '#fff',
+                                    boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
+                                    cursor: 'pointer',
+                                    transition: 'border 0.2s, box-shadow 0.2s',
+                                    fontWeight: 500,
+                                    color: '#c33764'
+                                }}
                                 onClick={() => setSelectedLesson(lesson)}
                             >
-                                {lesson.title}
-                            </li>
+                                <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 8 }}>{lesson.title}</div>
+                                <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{lesson.description}</div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
             {/* Step 4: Lesson Content */}

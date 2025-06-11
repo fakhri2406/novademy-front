@@ -127,13 +127,6 @@ const DashboardPage: React.FC = () => {
                     }
                 }));
                 setLessonsMap(lessonsMapTemp);
-
-                if (crs.length > 0) {
-                    const defaultLessons = lessonsMapTemp[crs[0].id];
-                    if (defaultLessons && defaultLessons.length > 0) {
-                        setSelectedLesson(defaultLessons[0]);
-                    }
-                }
             } catch (err) {
                 console.error('Failed to load dashboard data:', err);
                 setError('Failed to load your courses and lessons. Please try refreshing the page.');
@@ -211,6 +204,7 @@ const DashboardPage: React.FC = () => {
             {selectedPackageId && !selectedCourse && (
                 <div>
                     <h2>Kurslar</h2>
+                    <Button variant="link" onClick={() => setSelectedPackageId(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                         {uniquePackages.find(pkg => pkg.id === selectedPackageId)?.courseIds.map(courseId => {
                             const course = courses.find(c => c.id === courseId);
@@ -226,13 +220,13 @@ const DashboardPage: React.FC = () => {
                             );
                         })}
                     </ul>
-                    <Button variant="link" onClick={() => setSelectedPackageId(null)} style={{ color: '#c33764', fontWeight: 500 }}>← Geri</Button>
                 </div>
             )}
             {/* Step 3: Lessons */}
             {selectedPackageId && selectedCourse && !selectedLesson && (
                 <div>
                     <h2>Dərslər</h2>
+                    <Button variant="link" onClick={() => setSelectedCourse(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                         {(lessonsMap[selectedCourse.id] || []).map(lesson => (
                             <li
@@ -244,7 +238,6 @@ const DashboardPage: React.FC = () => {
                             </li>
                         ))}
                     </ul>
-                    <Button variant="link" onClick={() => setSelectedCourse(null)} style={{ color: '#c33764', fontWeight: 500 }}>← Geri</Button>
                 </div>
             )}
             {/* Step 4: Lesson Content */}

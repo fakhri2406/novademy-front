@@ -62,6 +62,7 @@ const DashboardPage: React.FC = () => {
     const [selectedCourse, setSelectedCourse] = useState<CourseResponse | null>(null);
     const [expandedPackageId, setExpandedPackageId] = useState<string | null>(null);
     const [expandedCourseId, setExpandedCourseId] = useState<string | null>(null);
+    const [chatbotOpen, setChatbotOpen] = useState(false);
 
     const userId = getUserIdFromToken();
 
@@ -277,9 +278,6 @@ const DashboardPage: React.FC = () => {
                                     Video mövcud deyil
                                 </div>
                             )}
-                            <div className="dashboard-card" style={{ minHeight: 300, marginTop: 32 }}>
-                                <Chatbot lessonId={selectedLesson.id} />
-                            </div>
                         </div>
                     ) : (
                         <div style={{ padding: '32px 0', color: '#888', textAlign: 'center' }}>
@@ -288,6 +286,64 @@ const DashboardPage: React.FC = () => {
                     )}
                 </Col>
             </Row>
+            {/* Floating Chatbot Button and Window */}
+            <div style={{ position: 'fixed', bottom: 32, right: 32, zIndex: 9999 }}>
+                {!chatbotOpen && (
+                    <button
+                        onClick={() => setChatbotOpen(true)}
+                        style={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: '50%',
+                            background: '#c33764',
+                            color: '#fff',
+                            border: 'none',
+                            boxShadow: '0 4px 16px 0 rgba(31,38,135,0.10)',
+                            fontSize: 32,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        aria-label="Open Chatbot"
+                    >
+                        💬
+                    </button>
+                )}
+                {chatbotOpen && (
+                    <div style={{
+                        width: 440,
+                        height: 620,
+                        background: '#fff',
+                        borderRadius: 18,
+                        boxShadow: '0 8px 32px 0 rgba(31,38,135,0.18)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                    }}>
+                        <button
+                            onClick={() => setChatbotOpen(false)}
+                            style={{
+                                position: 'absolute',
+                                top: 10,
+                                right: 10,
+                                background: 'transparent',
+                                border: 'none',
+                                fontSize: 24,
+                                color: '#c33764',
+                                cursor: 'pointer',
+                                zIndex: 2
+                            }}
+                            aria-label="Close Chatbot"
+                        >
+                            ×
+                        </button>
+                        <div style={{ flex: 1, padding: '32px 16px 16px 16px', overflow: 'auto' }}>
+                            <Chatbot lessonId={selectedLesson?.id || ''} />
+                        </div>
+                    </div>
+                )}
+            </div>
         </Container>
     );
 };

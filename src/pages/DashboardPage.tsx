@@ -211,17 +211,30 @@ const DashboardPage: React.FC = () => {
             {!selectedPackageId && (
                 <div>
                     <h2>Paketlər</h2>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
                         {uniquePackages.map(pkg => (
-                            <li
+                            <div
                                 key={pkg.id}
-                                style={{ cursor: 'pointer', padding: '12px 0', fontWeight: 600, color: '#c33764' }}
+                                style={{
+                                    border: '1px solid #e0e0e0',
+                                    borderRadius: 16,
+                                    padding: 24,
+                                    minWidth: 260,
+                                    maxWidth: 320,
+                                    background: '#fff',
+                                    boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
+                                    cursor: 'pointer',
+                                    transition: 'border 0.2s, box-shadow 0.2s',
+                                    fontWeight: 500
+                                }}
                                 onClick={() => { setSelectedPackageId(pkg.id); setSelectedCourse(null); setSelectedLesson(null); }}
                             >
-                                {pkg.title}
-                            </li>
+                                <div style={{ fontWeight: 700, fontSize: '1.15rem', marginBottom: 8 }}>{pkg.title}</div>
+                                <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{pkg.description}</div>
+                                <div style={{ color: '#c33764', fontWeight: 600, fontSize: '1.05rem' }}>{pkg.price} ₼</div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
             {/* Step 2: Courses */}

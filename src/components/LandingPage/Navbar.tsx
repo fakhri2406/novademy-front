@@ -20,6 +20,7 @@ const Navbar: React.FC = () => {
                 <Nav>
                     {isAuthenticated ? (
                         <>
+                            <Nav.Link as={Link} to="/dashboard">Paketlərim</Nav.Link>
                             <Nav.Link as={Link} to="/packages">Paket Al</Nav.Link>
                             <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
                             <Nav.Link onClick={handleLogout}>Çıxış</Nav.Link>

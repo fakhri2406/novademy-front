@@ -13,21 +13,22 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <BSNavbar bg="light" expand="lg">
-            <BSNavbar.Brand as={Link} to={isAuthenticated ? "/dashboard" : "/"}>Novademy</BSNavbar.Brand>
+        <BSNavbar bg="light" expand="lg" className="shadow-sm">
+            <BSNavbar.Brand as={Link} to="/" className="fw-bold">Novademy</BSNavbar.Brand>
             <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
             <BSNavbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                 <Nav>
                     {isAuthenticated ? (
                         <>
-                            <Nav.Link as={Link} to="/packages">Buy Package</Nav.Link>
-                            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-                            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                            <Nav.Link as={Link} to="/dashboard">Paketlərim</Nav.Link>
+                            <Nav.Link as={Link} to="/packages">Paket Al</Nav.Link>
+                            <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
+                            <Nav.Link onClick={handleLogout}>Çıxış</Nav.Link>
                         </>
                     ) : (
                         <>
-                            <Nav.Link as={Link} to="/register">Register</Nav.Link>
-                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                            <Nav.Link as={Link} to="/register">Qeydiyyat</Nav.Link>
+                            <Nav.Link as={Link} to="/login">Giriş</Nav.Link>
                         </>
                     )}
                 </Nav>

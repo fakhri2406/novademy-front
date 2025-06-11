@@ -60,6 +60,9 @@ const DashboardPage: React.FC = () => {
     const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null);
     const [selectedLesson, setSelectedLesson] = useState<LessonResponse | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<CourseResponse | null>(null);
+    const [expandedPackageId, setExpandedPackageId] = useState<string | null>(null);
+    const [expandedCourseId, setExpandedCourseId] = useState<string | null>(null);
+    const [chatbotOpen, setChatbotOpen] = useState(false);
 
     const userId = getUserIdFromToken();
 
@@ -182,164 +185,165 @@ const DashboardPage: React.FC = () => {
     }
 
     return (
-        <Container className="mt-5">
-            <div style={{ marginBottom: 32, fontSize: '1.1rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span
-                    style={{ color: !selectedPackageId ? '#c33764' : '#222', cursor: !selectedPackageId ? 'default' : 'pointer', fontWeight: !selectedPackageId ? 700 : 500 }}
-                    onClick={() => { setSelectedPackageId(null); setSelectedCourse(null); setSelectedLesson(null); }}
-                >Paketlər</span>
-                {selectedPackageId && <>
-                    <span style={{ color: '#888' }}>{'>'}</span>
-                    <span
-                        style={{ color: selectedPackageId && !selectedCourse ? '#c33764' : '#222', cursor: selectedPackageId && !selectedCourse ? 'default' : 'pointer', fontWeight: selectedPackageId && !selectedCourse ? 700 : 500 }}
-                        onClick={() => { setSelectedCourse(null); setSelectedLesson(null); }}
-                    >{uniquePackages.find(pkg => pkg.id === selectedPackageId)?.title || 'Kurslar'}</span>
-                </>}
-                {selectedCourse && <>
-                    <span style={{ color: '#888' }}>{'>'}</span>
-                    <span
-                        style={{ color: selectedCourse && !selectedLesson ? '#c33764' : '#222', cursor: selectedCourse && !selectedLesson ? 'default' : 'pointer', fontWeight: selectedCourse && !selectedLesson ? 700 : 500 }}
-                        onClick={() => { setSelectedLesson(null); }}
-                    >{selectedCourse.title}</span>
-                </>}
-                {selectedLesson && <>
-                    <span style={{ color: '#888' }}>{'>'}</span>
-                    <span style={{ color: '#c33764', fontWeight: 700 }}>{selectedLesson.title}</span>
-                </>}
-            </div>
-            {/* Step 1: Packages */}
-            {!selectedPackageId && (
-                <div>
-                    <h2>Paketlər</h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-                        {uniquePackages.map(pkg => (
-                            <div
-                                key={pkg.id}
-                                style={{
-                                    border: '1px solid #e0e0e0',
-                                    borderRadius: 16,
-                                    padding: 24,
-                                    minWidth: 260,
-                                    maxWidth: 320,
-                                    background: '#fff',
-                                    boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
-                                    cursor: 'pointer',
-                                    transition: 'border 0.2s, box-shadow 0.2s',
-                                    fontWeight: 500
-                                }}
-                                onClick={() => { setSelectedPackageId(pkg.id); setSelectedCourse(null); setSelectedLesson(null); }}
-                            >
-                                <div style={{ fontWeight: 700, fontSize: '1.15rem', marginBottom: 8 }}>{pkg.title}</div>
-                                <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{pkg.description}</div>
-                                <div style={{ color: '#c33764', fontWeight: 600, fontSize: '1.05rem' }}>{pkg.price} ₼</div>
-                            </div>
-                        ))}
+        <Container fluid className="mt-4">
+            <Row>
+                {/* Sidebar tree: Packages > Courses > Lessons */}
+                <Col md={3} style={{ borderRight: '1px solid #eee', minHeight: '80vh', background: '#fafbfc' }}>
+                    <div style={{ padding: '24px 0' }}>
+                        <h5 style={{ fontWeight: 700, marginBottom: 24, color: '#c33764' }}>Paketlər</h5>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            {uniquePackages.map(pkg => (
+                                <li key={pkg.id} style={{ marginBottom: 12 }}>
+                                    <div
+                                        style={{ fontWeight: 600, color: '#222', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+                                        onClick={() => {
+                                            setExpandedPackageId(expandedPackageId === pkg.id ? null : pkg.id);
+                                            setExpandedCourseId(null);
+                                        }}
+                                    >
+                                        <span style={{ fontSize: 18 }}>{expandedPackageId === pkg.id ? '▼' : '▶'}</span>
+                                        {pkg.title}
+                                    </div>
+                                    {expandedPackageId === pkg.id && (
+                                        <ul style={{ listStyle: 'none', paddingLeft: 24, marginTop: 8 }}>
+                                            {pkg.courseIds.map(courseId => {
+                                                const course = courses.find(c => c.id === courseId);
+                                                if (!course) return null;
+                                                return (
+                                                    <li key={courseId} style={{ marginBottom: 8 }}>
+                                                        <div
+                                                            style={{ fontWeight: 500, color: '#444', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+                                                            onClick={() => setExpandedCourseId(expandedCourseId === courseId ? null : courseId)}
+                                                        >
+                                                            <span style={{ fontSize: 16 }}>{expandedCourseId === courseId ? '▼' : '▶'}</span>
+                                                            {course.title}
+                                                        </div>
+                                                        {expandedCourseId === courseId && (
+                                                            <ul style={{ listStyle: 'none', paddingLeft: 24, marginTop: 6 }}>
+                                                                {(lessonsMap[courseId] || []).map(lesson => (
+                                                                    <li
+                                                                        key={lesson.id}
+                                                                        style={{
+                                                                            fontWeight: selectedLesson?.id === lesson.id ? 700 : 400,
+                                                                            color: selectedLesson?.id === lesson.id ? '#c33764' : '#222',
+                                                                            cursor: 'pointer',
+                                                                            marginBottom: 6,
+                                                                            background: selectedLesson?.id === lesson.id ? '#f5e1ef' : 'transparent',
+                                                                            borderRadius: 8,
+                                                                            padding: '6px 10px'
+                                                                        }}
+                                                                        onClick={() => setSelectedLesson(lesson)}
+                                                                    >
+                                                                        {lesson.title}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                </div>
-            )}
-            {/* Step 2: Courses */}
-            {selectedPackageId && !selectedCourse && (
-                <div>
-                    <h2>Kurslar</h2>
-                    <Button variant="link" onClick={() => setSelectedPackageId(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-                        {uniquePackages.find(pkg => pkg.id === selectedPackageId)?.courseIds.map(courseId => {
-                            const course = courses.find(c => c.id === courseId);
-                            if (!course) return null;
-                            return (
-                                <div
-                                    key={courseId}
-                                    style={{
-                                        border: '1px solid #e0e0e0',
-                                        borderRadius: 16,
-                                        padding: 24,
-                                        minWidth: 220,
-                                        maxWidth: 320,
-                                        background: '#fff',
-                                        boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
-                                        cursor: 'pointer',
-                                        transition: 'border 0.2s, box-shadow 0.2s',
-                                        fontWeight: 500
-                                    }}
-                                    onClick={() => { setSelectedCourse(course); setSelectedLesson(null); }}
-                                >
-                                    <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 8 }}>{course.title}</div>
-                                    <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{course.description}</div>
+                </Col>
+                {/* Main content area */}
+                <Col md={9}>
+                    {selectedLesson ? (
+                        <div style={{ padding: '32px 0' }}>
+                            <h3 style={{ fontWeight: 700, marginBottom: 24 }}>{selectedLesson.title}</h3>
+                            {selectedLesson.videoUrl ? (
+                                <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: 18, marginBottom: 24, overflow: 'hidden', background: '#000' }}>
+                                    <video
+                                        src={selectedLesson.videoUrl}
+                                        controls
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            borderRadius: 18,
+                                            objectFit: 'cover',
+                                            background: '#000'
+                                        }}
+                                    >
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
-            {/* Step 3: Lessons */}
-            {selectedPackageId && selectedCourse && !selectedLesson && (
-                <div>
-                    <h2>Dərslər</h2>
-                    <Button variant="link" onClick={() => setSelectedCourse(null)} style={{ color: '#c33764', fontWeight: 500, marginBottom: 12 }}>← Geri</Button>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-                        {(lessonsMap[selectedCourse.id] || []).map(lesson => (
-                            <div
-                                key={lesson.id}
-                                style={{
-                                    border: '1px solid #e0e0e0',
-                                    borderRadius: 16,
-                                    padding: 24,
-                                    minWidth: 220,
-                                    maxWidth: 320,
-                                    background: '#fff',
-                                    boxShadow: '0 2px 8px 0 rgba(31,38,135,0.04)',
-                                    cursor: 'pointer',
-                                    transition: 'border 0.2s, box-shadow 0.2s',
-                                    fontWeight: 500,
-                                    color: '#c33764'
-                                }}
-                                onClick={() => setSelectedLesson(lesson)}
-                            >
-                                <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 8 }}>{lesson.title}</div>
-                                <div style={{ fontSize: '0.97rem', color: '#555', marginBottom: 12 }}>{lesson.description}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-            {/* Step 4: Lesson Content */}
-            {selectedLesson && (
-                <Row>
-                    <Col md={8}>
-                        <h2>{selectedLesson.title}</h2>
-                        {selectedLesson.videoUrl ? (
-                            <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: 18, marginBottom: 24, overflow: 'hidden', background: '#000' }}>
-                                <video
-                                    src={selectedLesson.videoUrl}
-                                    controls
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: '100%',
-                                        height: '100%',
-                                        borderRadius: 18,
-                                        objectFit: 'cover',
-                                        background: '#000'
-                                    }}
-                                >
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                        ) : (
-                            <div style={{ width: '100%', aspectRatio: '16/9', background: '#f8d7da', borderRadius: 18, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#721c24', fontWeight: 600 }}>
-                                Video mövcud deyil
-                            </div>
-                        )}
-                        <Button variant="link" onClick={() => setSelectedLesson(null)} style={{ color: '#c33764', fontWeight: 500 }}>← Geri</Button>
-                    </Col>
-                    <Col md={4}>
-                        <div className="dashboard-card" style={{ minHeight: 300 }}>
-                            <Chatbot lessonId={selectedLesson.id} />
+                            ) : (
+                                <div style={{ width: '100%', aspectRatio: '16/9', background: '#f8d7da', borderRadius: 18, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#721c24', fontWeight: 600 }}>
+                                    Video mövcud deyil
+                                </div>
+                            )}
                         </div>
-                    </Col>
-                </Row>
-            )}
+                    ) : (
+                        <div style={{ padding: '32px 0', color: '#888', textAlign: 'center' }}>
+                            Dərs seçin
+                        </div>
+                    )}
+                </Col>
+            </Row>
+            {/* Floating Chatbot Button and Window */}
+            <div style={{ position: 'fixed', bottom: 32, right: 32, zIndex: 9999 }}>
+                {!chatbotOpen && (
+                    <button
+                        onClick={() => setChatbotOpen(true)}
+                        style={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: '50%',
+                            background: '#c33764',
+                            color: '#fff',
+                            border: 'none',
+                            boxShadow: '0 4px 16px 0 rgba(31,38,135,0.10)',
+                            fontSize: 32,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        aria-label="Open Chatbot"
+                    >
+                        💬
+                    </button>
+                )}
+                {chatbotOpen && (
+                    <div style={{
+                        width: 440,
+                        height: 620,
+                        background: '#fff',
+                        borderRadius: 18,
+                        boxShadow: '0 8px 32px 0 rgba(31,38,135,0.18)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                    }}>
+                        <button
+                            onClick={() => setChatbotOpen(false)}
+                            style={{
+                                position: 'absolute',
+                                top: 10,
+                                right: 10,
+                                background: 'transparent',
+                                border: 'none',
+                                fontSize: 24,
+                                color: '#c33764',
+                                cursor: 'pointer',
+                                zIndex: 2
+                            }}
+                            aria-label="Close Chatbot"
+                        >
+                            ×
+                        </button>
+                        <div style={{ flex: 1, padding: '32px 16px 16px 16px', overflow: 'auto' }}>
+                            <Chatbot lessonId={selectedLesson?.id || ''} />
+                        </div>
+                    </div>
+                )}
+            </div>
         </Container>
     );
 };

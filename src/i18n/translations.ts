@@ -147,6 +147,9 @@ export const translations = {
 
     // Footer
     copyright: '© 2025 Novademy. Bütün hüquqlar qorunur.',
+
+    // Profile Edit Form
+    profileUpdateError: 'Profil yenilənərkən xəta baş verdi.',
   },
   en: {
     // Common
@@ -296,6 +299,9 @@ export const translations = {
 
     // Footer
     copyright: '© 2025 Novademy. All rights reserved.',
+
+    // Profile Edit Form
+    profileUpdateError: 'An error occurred while updating the profile.',
   },
   ru: {
     // Common
@@ -418,10 +424,10 @@ export const translations = {
 
     // Groups & Subjects
     graduation: 'Выпускной',
-    group1: '1-я группа',
-    group2: '2-я группа',
-    group3: '3-я группа',
-    group4: '4-я группа',
+    group1: 'Группа 1',
+    group2: 'Группа 2',
+    group3: 'Группа 3',
+    group4: 'Группа 4',
     group5: '5-я группа',
     math: 'Математика',
     englishSubject: 'Английский',
@@ -445,5 +451,8 @@ export const translations = {
 
     // Footer
     copyright: '© 2025 Novademy. Все права защищены.',
+
+    // Profile Edit Form
+    profileUpdateError: 'Произошла ошибка при обновлении профиля.',
   },
 }; 

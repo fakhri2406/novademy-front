@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Alert, Spinner } from 'react-bootstrap';
 import api from '../services/api';
+import { useTranslation } from '../i18n/useTranslation';
 
 const EmailVerificationPage: React.FC = () => {
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [userId, setUserId] = useState<string>('');
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'danger' | 'info' } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,10 +18,10 @@ const EmailVerificationPage: React.FC = () => {
     if (location.state?.userId) {
       setUserId(location.state.userId);
     } else {
-      setMessage({ text: 'User ID not provided. Please register again.', type: 'danger' });
+      setMessage({ text: t('noUserIdProvided'), type: 'danger' });
       setTimeout(() => navigate('/register'), 3000);
     }
-  }, [location.state, navigate]);
+  }, [location.state, navigate, t]);
 
   const handleInputChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; // Only allow digits
@@ -48,14 +50,13 @@ const EmailVerificationPage: React.FC = () => {
     const verificationCode = code.join('');
     
     if (verificationCode.length !== 4) {
-      setMessage({ text: 'Please enter the full 4-digit code.', type: 'danger' });
+      setMessage({ text: t('enterFullCode'), type: 'danger' });
       return;
     }
 
     // Ensure userId is a valid GUID
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
-      console.error('Invalid userId format in verifyEmail:', userId);
-      setMessage({ text: 'Invalid user ID format. Please register again.', type: 'danger' });
+      setMessage({ text: t('invalidUserIdFormat'), type: 'danger' });
       setTimeout(() => navigate('/register'), 3000);
       return;
     }
@@ -63,8 +64,7 @@ const EmailVerificationPage: React.FC = () => {
     // Ensure code is exactly 4 digits
     const cleanCode = verificationCode.replace(/\D/g, '');
     if (!/^\d{4}$/.test(cleanCode)) {
-      console.error('Invalid code format in verifyEmail:', verificationCode);
-      setMessage({ text: 'Invalid verification code format. Expected exactly 4 digits.', type: 'danger' });
+      setMessage({ text: t('invalidCodeFormat'), type: 'danger' });
       return;
     }
 
@@ -72,37 +72,16 @@ const EmailVerificationPage: React.FC = () => {
     setMessage(null);
 
     try {
-      console.log('Sending verification request:', {
-        userId,
-        code: cleanCode,
-        endpoint: '/auth/verify-email'
-      });
-
       const response = await api.post('/auth/verify-email', {
         userId: userId.toLowerCase(),
         code: cleanCode
       });
 
-      console.log('Verification response:', response.data);
-
       if (response.status === 200) {
-        setMessage({ text: 'Email verified successfully! Redirecting to login...', type: 'success' });
+        setMessage({ text: t('emailVerifiedSuccess'), type: 'success' });
         setTimeout(() => navigate('/login'), 2000);
       }
     } catch (error: any) {
-      console.error('Verification error details:', {
-        message: error.message,
-        response: {
-          status: error.response?.status,
-          data: error.response?.data,
-          headers: error.response?.headers
-        },
-        request: {
-          userId,
-          code: cleanCode
-        }
-      });
-
       if (error.response?.data) {
         // Handle specific error messages from the API
         const errorMessage = typeof error.response.data === 'string' 
@@ -110,17 +89,17 @@ const EmailVerificationPage: React.FC = () => {
           : error.response.data.message || JSON.stringify(error.response.data);
 
         if (errorMessage.includes('Invalid verification code')) {
-          setMessage({ text: 'The verification code is incorrect. Please check your email and try again.', type: 'danger' });
+          setMessage({ text: t('invalidVerificationCode'), type: 'danger' });
         } else if (errorMessage.includes('expired')) {
-          setMessage({ text: 'The verification code has expired. Please request a new one.', type: 'danger' });
+          setMessage({ text: t('codeExpired'), type: 'danger' });
         } else if (errorMessage.includes('already verified')) {
-          setMessage({ text: 'This email is already verified. You can now login.', type: 'info' });
+          setMessage({ text: t('emailAlreadyVerified'), type: 'info' });
           setTimeout(() => navigate('/login'), 2000);
         } else {
           setMessage({ text: errorMessage, type: 'danger' });
         }
       } else {
-        setMessage({ text: 'Verification failed. Please try again.', type: 'danger' });
+        setMessage({ text: t('verificationFailed'), type: 'danger' });
       }
     } finally {
       setIsLoading(false);
@@ -133,7 +112,7 @@ const EmailVerificationPage: React.FC = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card shadow-sm">
             <div className="card-body p-4">
-              <h2 className="text-center mb-4">Email Verification</h2>
+              <h2 className="text-center mb-4">{t('emailVerification')}</h2>
               {message && (
                 <Alert variant={message.type} className="mb-4">
                   {message.text}
@@ -142,7 +121,7 @@ const EmailVerificationPage: React.FC = () => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-4">
                   <Form.Label className="text-center d-block mb-3">
-                    Please enter the 4-digit code sent to your email
+                    {t('enterVerificationCode')}
                   </Form.Label>
                   <div className="d-flex justify-content-center gap-2">
                     {[0, 1, 2, 3].map((index) => (
@@ -176,10 +155,10 @@ const EmailVerificationPage: React.FC = () => {
                         role="status"
                         aria-hidden="true"
                       />
-                      <span>Verifying...</span>
+                      <span>{t('verifying')}</span>
                     </>
                   ) : (
-                    'Verify Email'
+                    t('verifyEmail')
                   )}
                 </Button>
               </Form>

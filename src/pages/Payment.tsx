@@ -28,14 +28,14 @@ const Payment: React.FC = () => {
     const details = location.state as PaymentDetails;
     if (!details) {
       console.error('No payment details found in location state');
-      setError('No payment details found. Please select a package first.');
+      setError('Ödəniş məlumatları tapılmadı. Zəhmət olmasa əvvəlcə paket seçin.');
       return;
     }
 
     // Validate payment details
     if (!details.packageId || !details.amount || !details.packageName) {
       console.error('Invalid payment details:', details);
-      setError('Invalid payment details. Please try selecting the package again.');
+      setError('Yanlış ödəniş məlumatları. Zəhmət olmasa paketi yenidən seçin.');
       return;
     }
 
@@ -45,7 +45,7 @@ const Payment: React.FC = () => {
 
   const handlePayment = async () => {
     if (!paymentDetails) {
-      setError('Payment details are missing. Please try again.');
+      setError('Ödəniş məlumatları yoxdur. Zəhmət olmasa yenidən cəhd edin.');
       return;
     }
     
@@ -61,8 +61,8 @@ const Payment: React.FC = () => {
       
     } catch (error) {
       console.error('Payment error:', error);
-      setError(error instanceof Error ? error.message : 'Failed to process payment. Please try again.');
-      message.error('Failed to process payment. Please try again.');
+      setError(error instanceof Error ? error.message : 'Ödəniş emal edilə bilmədi. Zəhmət olmasa yenidən cəhd edin.');
+      message.error('Ödəniş emal edilə bilmədi. Zəhmət olmasa yenidən cəhd edin.');
     } finally {
       setLoading(false);
     }
@@ -78,13 +78,13 @@ const Payment: React.FC = () => {
     return (
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px' }}>
         <Alert
-          message="Payment Error"
+          message="Ödəniş Xətası"
           description={error}
           type="error"
           showIcon
           action={
             <Button type="primary" onClick={() => navigate('/packages')}>
-              Back to Packages
+              Paketlərə Qayıt
             </Button>
           }
         />
@@ -97,7 +97,7 @@ const Payment: React.FC = () => {
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px', textAlign: 'center' }}>
         <Spin size="large" />
         <div style={{ marginTop: 16 }}>
-          <Text>Loading payment details...</Text>
+          <Text>Ödəniş məlumatları yüklənir...</Text>
         </div>
       </div>
     );
@@ -107,15 +107,15 @@ const Payment: React.FC = () => {
     <>
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px' }}>
         <Card>
-          <Title level={2}>Payment Details</Title>
+          <Title level={2}>Ödəniş Məlumatları</Title>
           <div style={{ marginBottom: 24 }}>
-            <Text strong>Package:</Text> {paymentDetails.packageName}
+            <Text strong>Paket:</Text> {paymentDetails.packageName}
           </div>
           <div style={{ marginBottom: 24 }}>
-            <Text strong>Amount:</Text> {paymentDetails.amount} AZN
+            <Text strong>Məbləğ:</Text> {paymentDetails.amount} AZN
           </div>
           <div style={{ marginBottom: 24 }}>
-            <Text type="secondary">This is a demo payment. No actual payment will be processed.</Text>
+            <Text type="secondary">Bu demo ödənişdir. Heç bir real ödəniş emal edilməyəcək.</Text>
           </div>
           <Button
             type="primary"
@@ -125,7 +125,7 @@ const Payment: React.FC = () => {
             loading={loading}
             onClick={handlePayment}
           >
-            {loading ? 'Processing Payment...' : 'Proceed to Payment (Demo)'}
+            {loading ? 'Ödəniş Emal Edilir...' : 'Ödənişə Davam Et (Demo)'}
           </Button>
           <Button
             type="link"
@@ -133,31 +133,31 @@ const Payment: React.FC = () => {
             onClick={() => navigate('/packages')}
             style={{ marginTop: 16 }}
           >
-            Cancel and Return to Packages
+            Ləğv Et və Paketlərə Qayıt
           </Button>
         </Card>
       </div>
 
       <Modal
-        title="Payment Successful"
+        title="Ödəniş Uğurlu Oldu"
         open={showSuccessModal}
         onOk={handleSuccessModalClose}
         onCancel={handleSuccessModalClose}
         footer={[
           <Button key="dashboard" type="primary" onClick={handleSuccessModalClose}>
-            Go to Dashboard
+            İdarəetmə Paneline Get
           </Button>
         ]}
       >
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <CheckCircleOutlined style={{ fontSize: 48, color: '#52c41a', marginBottom: 16 }} />
-          <Title level={4}>Thank you for your purchase!</Title>
+          <Title level={4}>Alış-verişiniz üçün təşəkkür edirik!</Title>
           <Text>
-            Your payment of {paymentDetails.amount} AZN for {paymentDetails.packageName} has been processed successfully.
+            {paymentDetails.packageName} üçün {paymentDetails.amount} AZN məbləğində ödənişiniz uğurla emal edildi.
           </Text>
           <br />
           <Text type="secondary">
-            (Note: This is a demo payment. No actual payment was processed.)
+            (Qeyd: Bu demo ödənişdir. Heç bir real ödəniş emal edilmədi.)
           </Text>
         </div>
       </Modal>

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { setAccessToken, setRefreshToken, getUserIdFromToken } from '../../utils/auth';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
+import { useTranslation } from '../../i18n/useTranslation';
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const LoginForm: React.FC = () => {
       }
     } catch (err) {
       console.error('Login failed:', err);
-      setError('Login failed. Please check your credentials.');
+      setError(t('loginFailed'));
     }
   };
 
@@ -43,7 +45,7 @@ const LoginForm: React.FC = () => {
       {error && <div className="text-danger mb-2">{error}</div>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="username" className="mb-3">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>{t('username')}</Form.Label>
           <Form.Control
             type="text"
             value={username}
@@ -52,7 +54,7 @@ const LoginForm: React.FC = () => {
           />
         </Form.Group>
         <Form.Group controlId="password" className="mb-4">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t('password')}</Form.Label>
           <InputGroup>
             <Form.Control
               type={showPassword ? "text" : "password"}
@@ -74,12 +76,12 @@ const LoginForm: React.FC = () => {
           </InputGroup>
         </Form.Group>
         <Button variant="primary" type="submit" className="w-100 mb-3">
-          Login
+          {t('login')}
         </Button>
         <div className="text-center">
           <small className="text-muted">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-decoration-none">Register here</Link>
+            {t('noAccount')}{' '}
+            <Link to="/register" className="text-decoration-none">{t('register')}</Link>
           </small>
         </div>
       </Form>

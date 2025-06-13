@@ -1,25 +1,28 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-
-const promos = [
-  {
-    title: 'Video Dərslər',
-    desc: 'Hər fənn üzrə yüzlərlə izahlı video',
-  },
-  {
-    title: 'Testlər',
-    desc: 'Dərslərə uyğun sınaq testləri',
-  },
-  {
-    title: 'Statistika',
-    desc: 'Nəticələrini real vaxtda izləmə imkanı',
-  },
-];
+import { useTranslation } from '../../i18n/useTranslation';
 
 const PromoSection: React.FC = () => {
+  const { t } = useTranslation();
+
+  const promos = [
+    {
+      title: t('videoLessons'),
+      desc: t('videoLessonsDesc'),
+    },
+    {
+      title: t('tests'),
+      desc: t('testsDesc'),
+    },
+    {
+      title: t('statistics'),
+      desc: t('statisticsDesc'),
+    },
+  ];
+
   return (
     <Container className="my-5 text-center">
-      <h2 className="mb-4">Niyə Novademy?</h2>
+      <h2 className="mb-4">{t('whyNovademy')}</h2>
       <Row>
         {promos.map((item, idx) => (
           <Col md={4} key={idx} className="mb-3">

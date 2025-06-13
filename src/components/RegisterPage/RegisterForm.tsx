@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Spinner, InputGroup } from 'react-bootstrap';
 import api from '../../services/api';
+import { useTranslation } from '../../i18n/useTranslation';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
@@ -49,14 +51,6 @@ const RegisterForm: React.FC = () => {
 
     try {
       const response = await api.post('/auth/register', formData);
-      console.log('Full registration response:', response);
-      console.log('Response data:', response.data);
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-      
-      console.log('Response data type:', typeof response.data);
-      console.log('Response data keys:', Object.keys(response.data));
-      
       if (response.status === 201 || response.status === 200) {
         let userId: string | null = null;
         
@@ -64,42 +58,29 @@ const RegisterForm: React.FC = () => {
           const match = response.data.match(/User with ID ([^ ]+)/);
           if (match) {
             userId = match[1];
-            console.log('Found userId in response message:', userId);
           }
         }
         
         if (!userId) {
-          console.error('No user ID found in response data. Full response:', response.data);
           throw new Error('Could not find user ID in server response');
         }
         
         userId = userId.trim().toLowerCase();
         
         if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
-          console.error('Invalid userId format:', userId);
           throw new Error('Invalid user ID format received from server');
         }
         
-        console.log('Successfully extracted userId:', userId);
         navigate('/verify-email', { state: { userId } });
       } else {
-        console.error('Unexpected status code:', response.status);
-        console.error('Response data:', response.data);
         throw new Error(`Unexpected response status: ${response.status}`);
       }
     } catch (err: any) {
-      console.error('Registration failed:', err);
-      console.error('Error details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        headers: err.response?.headers
-      });
       setError(
         err.response?.data?.message || 
         err.response?.data || 
         err.message || 
-        'Registration failed. Please try again.'
+        t('registrationFailed')
       );
     } finally {
       setIsLoading(false);
@@ -114,7 +95,7 @@ const RegisterForm: React.FC = () => {
           {/* Left Column */}
           <div className="col-md-6">
             <Form.Group controlId="username" className="mb-3">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>{t('username')}</Form.Label>
               <Form.Control
                 type="text"
                 value={username}
@@ -124,7 +105,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="password" className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>{t('password')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type={showPassword ? "text" : "password"}
@@ -147,7 +128,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="firstName" className="mb-3">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>{t('firstName')}</Form.Label>
               <Form.Control
                 type="text"
                 value={firstName}
@@ -157,7 +138,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="lastName" className="mb-3">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>{t('lastName')}</Form.Label>
               <Form.Control
                 type="text"
                 value={lastName}
@@ -170,7 +151,7 @@ const RegisterForm: React.FC = () => {
           {/* Right Column */}
           <div className="col-md-6">
             <Form.Group controlId="email" className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label>{t('email')}</Form.Label>
               <Form.Control
                 type="email"
                 value={email}
@@ -180,7 +161,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="phoneNumber" className="mb-3">
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label>{t('phoneNumber')}</Form.Label>
               <Form.Control
                 type="tel"
                 value={phoneNumber}
@@ -190,7 +171,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="group" className="mb-3">
-              <Form.Label>Group</Form.Label>
+              <Form.Label>{t('group')}</Form.Label>
               <Form.Control
                 as="select"
                 value={group}
@@ -205,7 +186,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="sector" className="mb-3">
-              <Form.Label>Sector</Form.Label>
+              <Form.Label>{t('sector')}</Form.Label>
               <Form.Control
                 as="select"
                 value={sector}
@@ -219,7 +200,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="profilePicture" className="mb-3">
-              <Form.Label>Profile Picture</Form.Label>
+              <Form.Label>{t('profilePicture')}</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleFileChange}
@@ -245,16 +226,16 @@ const RegisterForm: React.FC = () => {
                     role="status"
                     aria-hidden="true"
                   />
-                  <span>Registering...</span>
+                  <span>{t('registering')}</span>
                 </>
               ) : (
-                'Register'
+                t('register')
               )}
             </Button>
             <div className="text-center">
               <small className="text-muted">
-                Already have an account?{' '}
-                <Link to="/login" className="text-decoration-none">Login here</Link>
+                {t('alreadyHaveAccount')}{' '}
+                <Link to="/login" className="text-decoration-none">{t('login')}</Link>
               </small>
             </div>
           </div>

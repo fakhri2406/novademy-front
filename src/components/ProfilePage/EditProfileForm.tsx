@@ -3,6 +3,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { getRefreshToken, setAccessToken } from '../../utils/auth';
+import { useTranslation } from '../../i18n/useTranslation';
 
 interface EditProfileFormProps {
     initialData: {
@@ -20,6 +21,7 @@ interface EditProfileFormProps {
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, onSuccess }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         Username: initialData.username,
         FirstName: initialData.firstName,
@@ -71,7 +73,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             if (err.response?.data?.errors) {
                 setValidationErrors(err.response.data.errors);
             } else {
-                setError(err.response?.data?.message || 'An error occurred while updating the profile.');
+                setError(err.response?.data?.message || t('profileUpdateError'));
             }
         }
     };
@@ -81,7 +83,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             {error && <Alert variant="danger">{error}</Alert>}
             
             <Form.Group className="mb-3">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>{t('username')}</Form.Label>
                 <Form.Control
                     type="text"
                     name="Username"
@@ -95,7 +97,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>{t('firstName')}</Form.Label>
                 <Form.Control
                     type="text"
                     name="FirstName"
@@ -109,7 +111,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>{t('lastName')}</Form.Label>
                 <Form.Control
                     type="text"
                     name="LastName"
@@ -123,7 +125,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t('email')}</Form.Label>
                 <Form.Control
                     type="email"
                     name="Email"
@@ -137,7 +139,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Phone Number</Form.Label>
+                <Form.Label>{t('phoneNumber')}</Form.Label>
                 <Form.Control
                     type="tel"
                     name="PhoneNumber"
@@ -151,17 +153,17 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Group</Form.Label>
+                <Form.Label>{t('group')}</Form.Label>
                 <Form.Select
                     name="Group"
                     value={formData.Group}
                     onChange={handleChange}
                     isInvalid={!!getFieldError('Group')}
                 >
-                    <option value={1}>Group 1</option>
-                    <option value={2}>Group 2</option>
-                    <option value={3}>Group 3</option>
-                    <option value={4}>Group 4</option>
+                    <option value={1}>{t('group1')}</option>
+                    <option value={2}>{t('group2')}</option>
+                    <option value={3}>{t('group3')}</option>
+                    <option value={4}>{t('group4')}</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                     {getFieldError('Group')}
@@ -169,16 +171,16 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Sector</Form.Label>
+                <Form.Label>{t('sector')}</Form.Label>
                 <Form.Select
                     name="Sector"
                     value={formData.Sector}
                     onChange={handleChange}
                     isInvalid={!!getFieldError('Sector')}
                 >
-                    <option value="Azerbaijani">Azerbaijani</option>
-                    <option value="Russian">Russian</option>
-                    <option value="English">English</option>
+                    <option value="Azerbaijani">{t('azerbaijani')}</option>
+                    <option value="Russian">{t('russian')}</option>
+                    <option value="English">{t('english')}</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                     {getFieldError('Sector')}
@@ -186,7 +188,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Button variant="primary" type="submit">
-                Save Changes
+                {t('saveChanges')}
             </Button>
         </Form>
     );

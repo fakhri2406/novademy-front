@@ -150,6 +150,17 @@ export const translations = {
 
     // Profile Edit Form
     profileUpdateError: 'Profil yenilənərkən xəta baş verdi.',
+
+    // Dashboard Page
+    noActiveSubscription: 'Aktiv abunəliyiniz yoxdur. Dərslərə daxil olmaq üçün zəhmət olmasa paket alın.',
+    noCoursesInPackages: 'Paketlərinizdə dərs tapılmadı. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.',
+    failedToLoadCourses: 'Dərsləriniz və məşğələləriniz yüklənə bilmədi. Zəhmət olmasa səhifəni yeniləyin.',
+    loadingCourses: 'Dərsləriniz və məşğələləriniz yüklənir...',
+    coursesLoadFailed: 'Dərslər yüklənə bilmədi',
+    viewAvailablePackages: 'Mövcud Paketlərə Bax',
+    noCoursesAvailable: 'Dərslər Mövcud Deyil',
+    selectLesson: 'Dərs seçin',
+    selectLessonDescription: 'Sol tərəfdən bir dərs seçin',
   },
   en: {
     // Common
@@ -302,6 +313,17 @@ export const translations = {
 
     // Profile Edit Form
     profileUpdateError: 'An error occurred while updating the profile.',
+
+    // Dashboard Page
+    noActiveSubscription: 'You have no active subscription. Please purchase a package to access courses.',
+    noCoursesInPackages: 'No courses found in your packages. Please contact support.',
+    failedToLoadCourses: 'Failed to load your courses and exercises. Please refresh the page.',
+    loadingCourses: 'Loading your courses and exercises...',
+    coursesLoadFailed: 'Failed to Load Courses',
+    viewAvailablePackages: 'View Available Packages',
+    noCoursesAvailable: 'No Courses Available',
+    selectLesson: 'Select a Lesson',
+    selectLessonDescription: 'Choose a lesson from the left side',
   },
   ru: {
     // Common
@@ -454,5 +476,16 @@ export const translations = {
 
     // Profile Edit Form
     profileUpdateError: 'Произошла ошибка при обновлении профиля.',
+
+    // Dashboard Page
+    noActiveSubscription: 'У вас нет активной подписки. Пожалуйста, приобретите пакет для доступа к курсам.',
+    noCoursesInPackages: 'В ваших пакетах не найдено курсов. Пожалуйста, свяжитесь со службой поддержки.',
+    failedToLoadCourses: 'Не удалось загрузить ваши курсы и упражнения. Пожалуйста, обновите страницу.',
+    loadingCourses: 'Загрузка ваших курсов и упражнений...',
+    coursesLoadFailed: 'Не удалось загрузить курсы',
+    viewAvailablePackages: 'Просмотреть доступные пакеты',
+    noCoursesAvailable: 'Нет доступных курсов',
+    selectLesson: 'Выберите урок',
+    selectLessonDescription: 'Выберите урок из списка слева',
   },
 }; 

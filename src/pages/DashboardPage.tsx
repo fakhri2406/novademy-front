@@ -4,6 +4,7 @@ import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner, Alert } f
 import { Chatbot } from '../components/Dashboard/Chatbot';
 import api from '../services/api';
 import { getUserIdFromToken } from '../utils/auth';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface SubscriptionResponse {
     id: string;
@@ -50,6 +51,7 @@ interface LessonResponse {
 
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>([]);
@@ -82,7 +84,7 @@ const DashboardPage: React.FC = () => {
                 console.log('Active subscriptions:', subs);
                 
                 if (subs.length === 0) {
-                    setError('Aktiv abunəliyiniz yoxdur. Dərslərə daxil olmaq üçün zəhmət olmasa paket alın.');
+                    setError(t('noActiveSubscription'));
                     setLoading(false);
                     return;
                 }
@@ -100,7 +102,7 @@ const DashboardPage: React.FC = () => {
                 console.log('Course IDs:', courseIds);
                 
                 if (courseIds.length === 0) {
-                    setError('Paketlərinizdə dərs tapılmadı. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.');
+                    setError(t('noCoursesInPackages'));
                     setLoading(false);
                     return;
                 }
@@ -132,20 +134,20 @@ const DashboardPage: React.FC = () => {
                 setLessonsMap(lessonsMapTemp);
             } catch (err) {
                 console.error('Failed to load dashboard data:', err);
-                setError('Dərsləriniz və məşğələləriniz yüklənə bilmədi. Zəhmət olmasa səhifəni yeniləyin.');
+                setError(t('failedToLoadCourses'));
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [userId, navigate]);
+    }, [userId, navigate, t]);
 
     if (loading) {
         return (
             <div className="text-center mt-5">
                 <Spinner animation="border" />
-                <p className="mt-2">Dərsləriniz və məşğələləriniz yüklənir...</p>
+                <p className="mt-2">{t('loadingCourses')}</p>
             </div>
         );
     }
@@ -154,7 +156,7 @@ const DashboardPage: React.FC = () => {
         return (
             <Container className="mt-4">
                 <Alert variant="warning">
-                    <Alert.Heading>Dərslər yüklənə bilmədi</Alert.Heading>
+                    <Alert.Heading>{t('coursesLoadFailed')}</Alert.Heading>
                     <p>{error}</p>
                     {error.includes('subscriptions') && (
                         <Button 
@@ -162,7 +164,7 @@ const DashboardPage: React.FC = () => {
                             onClick={() => navigate('/packages')}
                             className="mt-2"
                         >
-                            Mövcud Paketlərə Bax
+                            {t('viewAvailablePackages')}
                         </Button>
                     )}
                 </Alert>
@@ -177,8 +179,8 @@ const DashboardPage: React.FC = () => {
         return (
             <Container className="mt-4">
                 <Alert variant="info">
-                    <Alert.Heading>Dərslər Mövcud Deyil</Alert.Heading>
-                    <p>Hal-hazırda paketlərinizdə heç bir dərs mövcud deyil.</p>
+                    <Alert.Heading>{t('noCoursesAvailable')}</Alert.Heading>
+                    <p>{t('noCoursesInPackages')}</p>
                 </Alert>
             </Container>
         );
@@ -190,7 +192,7 @@ const DashboardPage: React.FC = () => {
                 {/* Sidebar tree: Packages > Courses > Lessons */}
                 <Col md={3} style={{ borderRight: '1px solid #eee', minHeight: '80vh', background: '#fafbfc' }}>
                     <div style={{ padding: '24px 0' }}>
-                        <h5 style={{ fontWeight: 700, marginBottom: 24, color: '#c33764' }}>Paketlər</h5>
+                        <h5 style={{ fontWeight: 700, marginBottom: 24, color: '#c33764' }}>{t('packages')}</h5>
                         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                             {uniquePackages.map(pkg => (
                                 <li key={pkg.id} style={{ marginBottom: 12 }}>
@@ -280,8 +282,9 @@ const DashboardPage: React.FC = () => {
                             )}
                         </div>
                     ) : (
-                        <div style={{ padding: '32px 0', color: '#888', textAlign: 'center' }}>
-                            Dərs seçin
+                        <div className="text-center mt-5">
+                            <h3>{t('selectLesson')}</h3>
+                            <p>{t('selectLessonDescription')}</p>
                         </div>
                     )}
                 </Col>

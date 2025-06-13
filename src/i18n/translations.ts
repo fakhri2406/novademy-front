@@ -63,7 +63,7 @@ export const translations = {
     verifying: 'Təsdiqlənir...',
 
     // Profile
-    profileInfo: 'Profil Məlumatları',
+    profileInformation: 'Profil Məlumatları',
     editProfile: 'Profili Redaktə Et',
     saveChanges: 'Dəyişiklikləri Saxla',
     changePassword: 'Şifrəni Dəyiş',
@@ -212,7 +212,7 @@ export const translations = {
     verifying: 'Verifying...',
 
     // Profile
-    profileInfo: 'Profile Information',
+    profileInformation: 'Profile Information',
     editProfile: 'Edit Profile',
     saveChanges: 'Save Changes',
     changePassword: 'Change Password',
@@ -361,7 +361,7 @@ export const translations = {
     verifying: 'Подтверждение...',
 
     // Profile
-    profileInfo: 'Информация профиля',
+    profileInformation: 'Информация профиля',
     editProfile: 'Редактировать профиль',
     saveChanges: 'Сохранить изменения',
     changePassword: 'Изменить пароль',

@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { decodeToken } from '../utils/auth';
 import api from '../services/api';
 import EditProfileForm from '../components/ProfilePage/EditProfileForm';
+import { useTranslation } from '../i18n/useTranslation';
 
 const ProfilePage: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState<{
@@ -64,7 +66,7 @@ const ProfilePage: React.FC = () => {
         return (
             <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
                 <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Yüklənir...</span>
+                    <span className="visually-hidden">{t('loading')}</span>
                 </Spinner>
             </Container>
         );
@@ -84,7 +86,7 @@ const ProfilePage: React.FC = () => {
                                 {userData.profilePictureUrl ? (
                                     <img
                                         src={userData.profilePictureUrl}
-                                        alt="Profil"
+                                        alt={t('profile')}
                                         className="rounded-circle"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}
                                     />
@@ -106,30 +108,30 @@ const ProfilePage: React.FC = () => {
                                     userId={userData.id}
                                     onSuccess={() => {
                                         setIsEditing(false);
-                                        fetchUserData(); // Fetch fresh data after successful update
+                                        fetchUserData();
                                     }}
                                 />
                             ) : (
                                 <>
                                     <div className="mb-4">
-                                        <h3 className="text-center mb-4">Profil Məlumatları</h3>
+                                        <h3 className="text-center mb-4">{t('profileInformation')}</h3>
                                         <Row>
                                             <Col md={6}>
-                                                <p><strong>İstifadəçi adı:</strong> {userData.username}</p>
-                                                <p><strong>Ad:</strong> {userData.firstName}</p>
-                                                <p><strong>Soyad:</strong> {userData.lastName}</p>
+                                                <p><strong>{t('username')}:</strong> {userData.username}</p>
+                                                <p><strong>{t('firstName')}:</strong> {userData.firstName}</p>
+                                                <p><strong>{t('lastName')}:</strong> {userData.lastName}</p>
                                             </Col>
                                             <Col md={6}>
-                                                <p><strong>E-poçt:</strong> {userData.email}</p>
-                                                <p><strong>Telefon nömrəsi:</strong> {userData.phoneNumber}</p>
-                                                <p><strong>Qrup:</strong> {userData.group}</p>
-                                                <p><strong>Sektor:</strong> {userData.sector}</p>
+                                                <p><strong>{t('email')}:</strong> {userData.email}</p>
+                                                <p><strong>{t('phoneNumber')}:</strong> {userData.phoneNumber}</p>
+                                                <p><strong>{t('group')}:</strong> {userData.group}</p>
+                                                <p><strong>{t('sector')}:</strong> {userData.sector}</p>
                                             </Col>
                                         </Row>
                                     </div>
                                     <div className="text-center">
                                         <Button variant="primary" onClick={() => setIsEditing(true)}>
-                                            Profili Redaktə Et
+                                            {t('editProfile')}
                                         </Button>
                                     </div>
                                 </>

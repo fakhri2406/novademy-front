@@ -1,10 +1,21 @@
+const dispatchAuthChange = () => {
+  window.dispatchEvent(new Event('authChange'));
+};
+
 export const getAccessToken = (): string | null => localStorage.getItem('accessToken');
 export const getRefreshToken = (): string | null => localStorage.getItem('refreshToken');
-export const setAccessToken = (token: string): void => localStorage.setItem('accessToken', token);
-export const setRefreshToken = (token: string): void => localStorage.setItem('refreshToken', token);
+export const setAccessToken = (token: string): void => {
+  localStorage.setItem('accessToken', token);
+  dispatchAuthChange();
+};
+export const setRefreshToken = (token: string): void => {
+  localStorage.setItem('refreshToken', token);
+  dispatchAuthChange();
+};
 export const clearTokens = (): void => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
+  dispatchAuthChange();
 };
 
 interface DecodedToken {

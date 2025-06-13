@@ -83,6 +83,7 @@ export const translations = {
     paymentSuccessful: 'Ödəniş Uğurlu Oldu',
     thankYou: 'Təşəkkür edirik!',
     packageDescription: 'Paket təsviri',
+    loadingPackages: 'Paketlər yüklənir...',
 
     // Dashboard
     myCourses: 'Dərslərim',
@@ -101,8 +102,6 @@ export const translations = {
     azerbaijani: 'Azərbaycan',
     english: 'İngilis',
     russian: 'Rus',
-
-    loadingPackages: 'Paketlər yüklənir...',
 
     // Hero Section
     heroTitle: 'Qəbul imtahanına son 4 ay',
@@ -222,7 +221,7 @@ export const translations = {
     confirmPassword: 'Confirm Password',
 
     // Packages
-    selectPackage: 'Select a Package',
+    selectPackage: 'Select Package',
     packageDetails: 'Package Details',
     price: 'Price',
     buyNow: 'Buy Now',
@@ -233,6 +232,7 @@ export const translations = {
     paymentSuccessful: 'Payment Successful',
     thankYou: 'Thank You!',
     packageDescription: 'Package Description',
+    loadingPackages: 'Loading packages...',
 
     // Dashboard
     myCourses: 'My Courses',
@@ -251,8 +251,6 @@ export const translations = {
     azerbaijani: 'Azerbaijani',
     english: 'English',
     russian: 'Russian',
-
-    loadingPackages: 'Loading packages...',
 
     // Hero Section
     heroTitle: 'Last 4 months until university entrance exam',
@@ -383,6 +381,7 @@ export const translations = {
     paymentSuccessful: 'Оплата успешна',
     thankYou: 'Спасибо!',
     packageDescription: 'Описание пакета',
+    loadingPackages: 'Загрузка пакетов...',
 
     // Dashboard
     myCourses: 'Мои курсы',
@@ -401,8 +400,6 @@ export const translations = {
     azerbaijani: 'Азербайджанский',
     english: 'Английский',
     russian: 'Русский',
-
-    loadingPackages: 'Загрузка пакетов...',
 
     // Hero Section
     heroTitle: 'Последние 4 месяца до вступительного экзамена',

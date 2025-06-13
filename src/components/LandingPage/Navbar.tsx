@@ -1,13 +1,14 @@
 import React from 'react';
 import { Navbar as BSNavbar, Nav } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAccessToken, clearTokens } from '../../utils/auth';
+import { clearTokens } from '../../utils/auth';
 import LanguageSelector from '../LanguageSelector';
 import { useTranslation } from '../../i18n/useTranslation';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
-    const isAuthenticated = !!getAccessToken();
+    const { isAuthenticated } = useAuth();
     const { t } = useTranslation();
 
     const handleLogout = () => {

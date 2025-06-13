@@ -47,6 +47,20 @@ export const translations = {
     resendCode: 'Kodu yenidən göndər',
     loginFailed: 'Giriş uğursuz oldu. Məlumatlarınızı yoxlayın.',
     noAccount: 'Hesabınız yoxdur?',
+    registrationFailed: 'Qeydiyyat uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.',
+    registering: 'Qeydiyyatdan keçilir...',
+    alreadyHaveAccount: 'Artıq hesabınız var?',
+    noUserIdProvided: 'İstifadəçi ID-si təmin edilməyib. Zəhmət olmasa yenidən qeydiyyatdan keçin.',
+    enterFullCode: 'Zəhmət olmasa 4 rəqəmli kodu tam daxil edin.',
+    invalidUserIdFormat: 'Yanlış istifadəçi ID formatı. Zəhmət olmasa yenidən qeydiyyatdan keçin.',
+    invalidCodeFormat: 'Yanlış təsdiq kodu formatı. 4 rəqəm gözlənilir.',
+    emailVerifiedSuccess: 'E-poçt uğurla təsdiqləndi! Giriş səhifəsinə yönləndirilirsiniz...',
+    invalidVerificationCode: 'Təsdiq kodu yanlışdır. Zəhmət olmasa e-poçtunuzu yoxlayın və yenidən cəhd edin.',
+    codeExpired: 'Təsdiq kodu müddəti bitib. Zəhmət olmasa yeni kod tələb edin.',
+    emailAlreadyVerified: 'Bu e-poçt artıq təsdiqlənib. İndi daxil ola bilərsiniz.',
+    verificationFailed: 'Təsdiq uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.',
+    enterVerificationCode: 'E-poçtunuza göndərilən 4 rəqəmli kodu daxil edin',
+    verifying: 'Təsdiqlənir...',
 
     // Profile
     profileInfo: 'Profil Məlumatları',
@@ -68,6 +82,7 @@ export const translations = {
     proceedToPayment: 'Ödənişə Davam Et',
     paymentSuccessful: 'Ödəniş Uğurlu Oldu',
     thankYou: 'Təşəkkür edirik!',
+    packageDescription: 'Paket təsviri',
 
     // Dashboard
     myCourses: 'Dərslərim',
@@ -86,6 +101,53 @@ export const translations = {
     azerbaijani: 'Azərbaycan',
     english: 'İngilis',
     russian: 'Rus',
+
+    loadingPackages: 'Paketlər yüklənir...',
+
+    // Hero Section
+    heroTitle: 'Qəbul imtahanına son 4 ay',
+    heroSubtitle: 'Bu 4 ayda nəticəni Novademy ilə maksimuma çatdır!',
+    studyImage1: 'Təhsil Şəkli 1',
+    studyImage2: 'Təhsil Şəkli 2',
+    studyImage3: 'Təhsil Şəkli 3',
+
+    // Promo Section
+    whyNovademy: 'Niyə Novademy?',
+    videoLessons: 'Video Dərslər',
+    videoLessonsDesc: 'Hər fənn üzrə yüzlərlə izahlı video',
+    tests: 'Testlər',
+    testsDesc: 'Dərslərə uyğun sınaq testləri',
+    statisticsDesc: 'Nəticələrini real vaxtda izləmə imkanı',
+
+    // Groups & Subjects
+    graduation: 'Buraxılış',
+    group1: '1-ci qrup',
+    group2: '2-ci qrup',
+    group3: '3-cü qrup',
+    group4: '4-cü qrup',
+    group5: '5-ci qrup',
+    math: 'Riyaziyyat',
+    englishSubject: 'İngiliscə',
+    azRus: 'Azərbaycan/Rus',
+    physics: 'Fizika',
+    informaticsChemistry: 'İnformatika/Kimya',
+    geography: 'Coğrafiya',
+    history: 'Tarix',
+    literature: 'Ədəbiyyat',
+    biology: 'Biologiya',
+    chemistry: 'Kimya',
+
+    // FAQ
+    faqTitle: 'Suallar və Cavablar',
+    faq1q: 'Novademy nədir?',
+    faq1a: 'Novademy şagirdlər üçün onlayn hazırlaşma platformasıdır.',
+    faq2q: 'Necə qeydiyyatdan keçə bilərəm?',
+    faq2a: 'Ana səhifədəki qeydiyyat düyməsinə klikləyərək qeydiyyatdan keçə bilərsiniz.',
+    faq3q: 'Qiymətlər necədir?',
+    faq3a: 'Qiymətlər hissəsində müxtəlif planlar mövcuddur.',
+
+    // Footer
+    copyright: '© 2025 Novademy. Bütün hüquqlar qorunur.',
   },
   en: {
     // Common
@@ -135,6 +197,20 @@ export const translations = {
     resendCode: 'Resend Code',
     loginFailed: 'Login failed. Please check your credentials.',
     noAccount: 'Don\'t have an account?',
+    registrationFailed: 'Registration failed. Please try again.',
+    registering: 'Registering...',
+    alreadyHaveAccount: 'Already have an account?',
+    noUserIdProvided: 'No user ID provided. Please register again.',
+    enterFullCode: 'Please enter the complete 4-digit code.',
+    invalidUserIdFormat: 'Invalid user ID format. Please register again.',
+    invalidCodeFormat: 'Invalid verification code format. 4 digits expected.',
+    emailVerifiedSuccess: 'Email successfully verified! Redirecting to login page...',
+    invalidVerificationCode: 'Invalid verification code. Please check your email and try again.',
+    codeExpired: 'Verification code has expired. Please request a new code.',
+    emailAlreadyVerified: 'This email is already verified. You can now log in.',
+    verificationFailed: 'Verification failed. Please try again.',
+    enterVerificationCode: 'Enter the 4-digit code sent to your email',
+    verifying: 'Verifying...',
 
     // Profile
     profileInfo: 'Profile Information',
@@ -156,6 +232,7 @@ export const translations = {
     proceedToPayment: 'Proceed to Payment',
     paymentSuccessful: 'Payment Successful',
     thankYou: 'Thank You!',
+    packageDescription: 'Package Description',
 
     // Dashboard
     myCourses: 'My Courses',
@@ -174,6 +251,53 @@ export const translations = {
     azerbaijani: 'Azerbaijani',
     english: 'English',
     russian: 'Russian',
+
+    loadingPackages: 'Loading packages...',
+
+    // Hero Section
+    heroTitle: 'Last 4 months until university entrance exam',
+    heroSubtitle: 'Maximize your results with Novademy in these 4 months!',
+    studyImage1: 'Study Image 1',
+    studyImage2: 'Study Image 2',
+    studyImage3: 'Study Image 3',
+
+    // Promo Section
+    whyNovademy: 'Why Novademy?',
+    videoLessons: 'Video Lessons',
+    videoLessonsDesc: 'Hundreds of explanatory videos for each subject',
+    tests: 'Tests',
+    testsDesc: 'Practice tests tailored to lessons',
+    statisticsDesc: 'Track your results in real time',
+
+    // Groups & Subjects
+    graduation: 'Graduation',
+    group1: 'Group 1',
+    group2: 'Group 2',
+    group3: 'Group 3',
+    group4: 'Group 4',
+    group5: 'Group 5',
+    math: 'Mathematics',
+    englishSubject: 'English',
+    azRus: 'Azerbaijani/Russian',
+    physics: 'Physics',
+    informaticsChemistry: 'Informatics/Chemistry',
+    geography: 'Geography',
+    history: 'History',
+    literature: 'Literature',
+    biology: 'Biology',
+    chemistry: 'Chemistry',
+
+    // FAQ
+    faqTitle: 'Questions & Answers',
+    faq1q: 'What is Novademy?',
+    faq1a: 'Novademy is an online preparation platform for students.',
+    faq2q: 'How can I register?',
+    faq2a: 'You can register by clicking the registration button on the homepage.',
+    faq3q: 'How are the prices?',
+    faq3a: 'There are various plans in the pricing section.',
+
+    // Footer
+    copyright: '© 2025 Novademy. All rights reserved.',
   },
   ru: {
     // Common
@@ -223,6 +347,20 @@ export const translations = {
     resendCode: 'Отправить код повторно',
     loginFailed: 'Ошибка входа. Проверьте свои данные.',
     noAccount: 'Нет аккаунта?',
+    registrationFailed: 'Ошибка регистрации. Пожалуйста, попробуйте снова.',
+    registering: 'Регистрация...',
+    alreadyHaveAccount: 'Уже есть аккаунт?',
+    noUserIdProvided: 'ID пользователя не предоставлен. Пожалуйста, зарегистрируйтесь снова.',
+    enterFullCode: 'Пожалуйста, введите полный 4-значный код.',
+    invalidUserIdFormat: 'Неверный формат ID пользователя. Пожалуйста, зарегистрируйтесь снова.',
+    invalidCodeFormat: 'Неверный формат кода подтверждения. Ожидается 4 цифры.',
+    emailVerifiedSuccess: 'Email успешно подтвержден! Перенаправление на страницу входа...',
+    invalidVerificationCode: 'Неверный код подтверждения. Пожалуйста, проверьте вашу почту и попробуйте снова.',
+    codeExpired: 'Срок действия кода подтверждения истек. Пожалуйста, запросите новый код.',
+    emailAlreadyVerified: 'Этот email уже подтвержден. Теперь вы можете войти.',
+    verificationFailed: 'Ошибка подтверждения. Пожалуйста, попробуйте снова.',
+    enterVerificationCode: 'Введите 4-значный код, отправленный на вашу почту',
+    verifying: 'Подтверждение...',
 
     // Profile
     profileInfo: 'Информация профиля',
@@ -244,6 +382,7 @@ export const translations = {
     proceedToPayment: 'Перейти к оплате',
     paymentSuccessful: 'Оплата успешна',
     thankYou: 'Спасибо!',
+    packageDescription: 'Описание пакета',
 
     // Dashboard
     myCourses: 'Мои курсы',
@@ -262,5 +401,52 @@ export const translations = {
     azerbaijani: 'Азербайджанский',
     english: 'Английский',
     russian: 'Русский',
+
+    loadingPackages: 'Загрузка пакетов...',
+
+    // Hero Section
+    heroTitle: 'Последние 4 месяца до вступительного экзамена',
+    heroSubtitle: 'Максимизируйте свои результаты с Novademy за эти 4 месяца!',
+    studyImage1: 'Изображение учебы 1',
+    studyImage2: 'Изображение учебы 2',
+    studyImage3: 'Изображение учебы 3',
+
+    // Promo Section
+    whyNovademy: 'Почему Novademy?',
+    videoLessons: 'Видеоуроки',
+    videoLessonsDesc: 'Сотни объяснительных видео по каждому предмету',
+    tests: 'Тесты',
+    testsDesc: 'Тесты, соответствующие урокам',
+    statisticsDesc: 'Возможность отслеживать результаты в реальном времени',
+
+    // Groups & Subjects
+    graduation: 'Выпускной',
+    group1: '1-я группа',
+    group2: '2-я группа',
+    group3: '3-я группа',
+    group4: '4-я группа',
+    group5: '5-я группа',
+    math: 'Математика',
+    englishSubject: 'Английский',
+    azRus: 'Азербайджанский/Русский',
+    physics: 'Физика',
+    informaticsChemistry: 'Информатика/Химия',
+    geography: 'География',
+    history: 'История',
+    literature: 'Литература',
+    biology: 'Биология',
+    chemistry: 'Химия',
+
+    // FAQ
+    faqTitle: 'Вопросы и ответы',
+    faq1q: 'Что такое Novademy?',
+    faq1a: 'Novademy — это онлайн-платформа для подготовки школьников.',
+    faq2q: 'Как зарегистрироваться?',
+    faq2a: 'Вы можете зарегистрироваться, нажав кнопку регистрации на главной странице.',
+    faq3q: 'Какие цены?',
+    faq3a: 'В разделе цен представлены различные планы.',
+
+    // Footer
+    copyright: '© 2025 Novademy. Все права защищены.',
   },
 }; 

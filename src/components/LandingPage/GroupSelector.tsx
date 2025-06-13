@@ -1,34 +1,52 @@
 import React, { useState } from 'react';
 import { Button, Container, ButtonGroup, Row, Col, Card } from 'react-bootstrap';
+import { useTranslation } from '../../i18n/useTranslation';
 
-const groups = ['Buraxılış', '1-ci qrup', '2-ci qrup', '3-cü qrup', '4-cü qrup', '5-ci qrup'];
-
-const subjectsByGroup: Record<string, string[]> = {
-  'Buraxılış': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus'],
-  '1-ci qrup': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus', 'Fizika', 'İnformatika/Kimya'],
-  '2-ci qrup': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus', 'Coğrafiya', 'Tarix'],
-  '3-cü qrup': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus', 'Tarix', 'Ədəbiyyat'],
-  '4-cü qrup': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus', 'Biologiya', 'Kimya'],
-  '5-ci qrup': ['Riyaziyyat', 'İngiliscə', 'Azərbaycan/Rus']
-};
+const GROUP_KEYS = {
+  GRADUATION: 'graduation',
+  GROUP1: 'group1',
+  GROUP2: 'group2',
+  GROUP3: 'group3',
+  GROUP4: 'group4',
+  GROUP5: 'group5'
+} as const;
 
 const GroupSelector: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+
+  const groups = [
+    { key: GROUP_KEYS.GRADUATION, label: t('graduation') },
+    { key: GROUP_KEYS.GROUP1, label: t('group1') },
+    { key: GROUP_KEYS.GROUP2, label: t('group2') },
+    { key: GROUP_KEYS.GROUP3, label: t('group3') },
+    { key: GROUP_KEYS.GROUP4, label: t('group4') },
+    { key: GROUP_KEYS.GROUP5, label: t('group5') }
+  ];
+
+  const subjectsByGroup: Record<string, string[]> = {
+    [GROUP_KEYS.GRADUATION]: [t('math'), t('englishSubject'), t('azRus')],
+    [GROUP_KEYS.GROUP1]: [t('math'), t('englishSubject'), t('azRus'), t('physics'), t('informaticsChemistry')],
+    [GROUP_KEYS.GROUP2]: [t('math'), t('englishSubject'), t('azRus'), t('geography'), t('history')],
+    [GROUP_KEYS.GROUP3]: [t('math'), t('englishSubject'), t('azRus'), t('history'), t('literature')],
+    [GROUP_KEYS.GROUP4]: [t('math'), t('englishSubject'), t('azRus'), t('biology'), t('chemistry')],
+    [GROUP_KEYS.GROUP5]: [t('math'), t('englishSubject'), t('azRus')]
+  };
 
   return (
     <Container className="text-center my-4">
       <ButtonGroup>
-        {groups.map((group, idx) => (
+        {groups.map((group) => (
           <Button 
-            key={idx} 
-            variant={selectedGroup === group ? "primary" : "outline-primary"}
-            onClick={() => setSelectedGroup(group)}
+            key={group.key} 
+            variant={selectedGroup === group.key ? "primary" : "outline-primary"}
+            onClick={() => setSelectedGroup(group.key)}
           >
-            {group}
+            {group.label}
           </Button>
         ))}
       </ButtonGroup>
-      {selectedGroup && (
+      {selectedGroup && subjectsByGroup[selectedGroup] && (
         <Row className="mt-4">
           {subjectsByGroup[selectedGroup].map((subject, idx) => (
             <Col key={idx} md={4} className="mb-3">

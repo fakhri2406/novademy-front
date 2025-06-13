@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPackages } from '../features/packages/packagesSlice';
 import { RootState, AppDispatch } from '../store';
 import { useNavigate } from 'react-router-dom';
-import { getUserIdFromToken } from '../utils/auth';
 import { useTranslation } from '../i18n/useTranslation';
 
 const PackageSelectionPage: React.FC = () => {

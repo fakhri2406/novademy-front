@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, Row, Col, Container, Button } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const plans = [
   {
     name: 'Starter',

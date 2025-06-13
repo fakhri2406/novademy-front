@@ -23,7 +23,8 @@ const ProfilePage: React.FC = () => {
         id: string;
     } | null>(null);
 
-    const fetchUserData = async () => {
+    let fetchUserData: () => Promise<void>;
+    fetchUserData = async () => {
         try {
             const response = await api.get('/auth/me');
             const user = response.data;

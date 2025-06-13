@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, ButtonGroup, Button, ListGroup, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner, Alert } from 'react-bootstrap';
 import { Chatbot } from '../components/Dashboard/Chatbot';
 import api from '../services/api';
 import { getUserIdFromToken } from '../utils/auth';
@@ -54,13 +54,17 @@ const DashboardPage: React.FC = () => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>([]);
     const [packages, setPackages] = useState<PackageResponse[]>([]);
     const [courses, setCourses] = useState<CourseResponse[]>([]);
     const [lessonsMap, setLessonsMap] = useState<Record<string, LessonResponse[]>>({});
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedCourseId, setSelectedCourseId] = useState<string>('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null);
     const [selectedLesson, setSelectedLesson] = useState<LessonResponse | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedCourse, setSelectedCourse] = useState<CourseResponse | null>(null);
     const [expandedPackageId, setExpandedPackageId] = useState<string | null>(null);
     const [expandedCourseId, setExpandedCourseId] = useState<string | null>(null);

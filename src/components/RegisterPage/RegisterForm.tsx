@@ -99,7 +99,7 @@ const RegisterForm: React.FC = () => {
         err.response?.data?.message || 
         err.response?.data || 
         err.message || 
-        'Registration failed. Please try again.'
+        'Qeydiyyat uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.'
       );
     } finally {
       setIsLoading(false);
@@ -114,7 +114,7 @@ const RegisterForm: React.FC = () => {
           {/* Left Column */}
           <div className="col-md-6">
             <Form.Group controlId="username" className="mb-3">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>İstifadəçi adı</Form.Label>
               <Form.Control
                 type="text"
                 value={username}
@@ -124,7 +124,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="password" className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Şifrə</Form.Label>
               <InputGroup>
                 <Form.Control
                   type={showPassword ? "text" : "password"}
@@ -147,7 +147,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="firstName" className="mb-3">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>Ad</Form.Label>
               <Form.Control
                 type="text"
                 value={firstName}
@@ -157,7 +157,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="lastName" className="mb-3">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Soyad</Form.Label>
               <Form.Control
                 type="text"
                 value={lastName}
@@ -170,7 +170,7 @@ const RegisterForm: React.FC = () => {
           {/* Right Column */}
           <div className="col-md-6">
             <Form.Group controlId="email" className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label>E-poçt</Form.Label>
               <Form.Control
                 type="email"
                 value={email}
@@ -180,7 +180,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="phoneNumber" className="mb-3">
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label>Telefon nömrəsi</Form.Label>
               <Form.Control
                 type="tel"
                 value={phoneNumber}
@@ -190,7 +190,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="group" className="mb-3">
-              <Form.Label>Group</Form.Label>
+              <Form.Label>Qrup</Form.Label>
               <Form.Control
                 as="select"
                 value={group}
@@ -205,7 +205,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="sector" className="mb-3">
-              <Form.Label>Sector</Form.Label>
+              <Form.Label>Sektor</Form.Label>
               <Form.Control
                 as="select"
                 value={sector}
@@ -219,7 +219,7 @@ const RegisterForm: React.FC = () => {
             </Form.Group>
 
             <Form.Group controlId="profilePicture" className="mb-3">
-              <Form.Label>Profile Picture</Form.Label>
+              <Form.Label>Profil şəkli</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleFileChange}
@@ -245,10 +245,10 @@ const RegisterForm: React.FC = () => {
                     role="status"
                     aria-hidden="true"
                   />
-                  <span>Registering...</span>
+                  <span>Qeydiyyatdan keçilir...</span>
                 </>
               ) : (
-                'Register'
+                'Qeydiyyatdan keç'
               )}
             </Button>
             <div className="text-center">

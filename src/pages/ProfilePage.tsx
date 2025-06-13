@@ -64,7 +64,7 @@ const ProfilePage: React.FC = () => {
         return (
             <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
                 <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
+                    <span className="visually-hidden">Yüklənir...</span>
                 </Spinner>
             </Container>
         );
@@ -84,7 +84,7 @@ const ProfilePage: React.FC = () => {
                                 {userData.profilePictureUrl ? (
                                     <img
                                         src={userData.profilePictureUrl}
-                                        alt="Profile"
+                                        alt="Profil"
                                         className="rounded-circle"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}
                                     />
@@ -112,24 +112,24 @@ const ProfilePage: React.FC = () => {
                             ) : (
                                 <>
                                     <div className="mb-4">
-                                        <h3 className="text-center mb-4">Profile Information</h3>
+                                        <h3 className="text-center mb-4">Profil Məlumatları</h3>
                                         <Row>
                                             <Col md={6}>
-                                                <p><strong>Username:</strong> {userData.username}</p>
-                                                <p><strong>First Name:</strong> {userData.firstName}</p>
-                                                <p><strong>Last Name:</strong> {userData.lastName}</p>
+                                                <p><strong>İstifadəçi adı:</strong> {userData.username}</p>
+                                                <p><strong>Ad:</strong> {userData.firstName}</p>
+                                                <p><strong>Soyad:</strong> {userData.lastName}</p>
                                             </Col>
                                             <Col md={6}>
-                                                <p><strong>Email:</strong> {userData.email}</p>
-                                                <p><strong>Phone Number:</strong> {userData.phoneNumber}</p>
-                                                <p><strong>Group:</strong> {userData.group}</p>
-                                                <p><strong>Sector:</strong> {userData.sector}</p>
+                                                <p><strong>E-poçt:</strong> {userData.email}</p>
+                                                <p><strong>Telefon nömrəsi:</strong> {userData.phoneNumber}</p>
+                                                <p><strong>Qrup:</strong> {userData.group}</p>
+                                                <p><strong>Sektor:</strong> {userData.sector}</p>
                                             </Col>
                                         </Row>
                                     </div>
                                     <div className="text-center">
                                         <Button variant="primary" onClick={() => setIsEditing(true)}>
-                                            Edit Profile
+                                            Profili Redaktə Et
                                         </Button>
                                     </div>
                                 </>

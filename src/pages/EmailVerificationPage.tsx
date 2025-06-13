@@ -16,7 +16,7 @@ const EmailVerificationPage: React.FC = () => {
     if (location.state?.userId) {
       setUserId(location.state.userId);
     } else {
-      setMessage({ text: 'User ID not provided. Please register again.', type: 'danger' });
+      setMessage({ text: 'İstifadəçi ID-si təmin edilməyib. Zəhmət olmasa yenidən qeydiyyatdan keçin.', type: 'danger' });
       setTimeout(() => navigate('/register'), 3000);
     }
   }, [location.state, navigate]);
@@ -48,14 +48,14 @@ const EmailVerificationPage: React.FC = () => {
     const verificationCode = code.join('');
     
     if (verificationCode.length !== 4) {
-      setMessage({ text: 'Please enter the full 4-digit code.', type: 'danger' });
+      setMessage({ text: 'Zəhmət olmasa 4 rəqəmli kodu tam daxil edin.', type: 'danger' });
       return;
     }
 
     // Ensure userId is a valid GUID
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
       console.error('Invalid userId format in verifyEmail:', userId);
-      setMessage({ text: 'Invalid user ID format. Please register again.', type: 'danger' });
+      setMessage({ text: 'Yanlış istifadəçi ID formatı. Zəhmət olmasa yenidən qeydiyyatdan keçin.', type: 'danger' });
       setTimeout(() => navigate('/register'), 3000);
       return;
     }
@@ -64,7 +64,7 @@ const EmailVerificationPage: React.FC = () => {
     const cleanCode = verificationCode.replace(/\D/g, '');
     if (!/^\d{4}$/.test(cleanCode)) {
       console.error('Invalid code format in verifyEmail:', verificationCode);
-      setMessage({ text: 'Invalid verification code format. Expected exactly 4 digits.', type: 'danger' });
+      setMessage({ text: 'Yanlış təsdiq kodu formatı. 4 rəqəm gözlənilir.', type: 'danger' });
       return;
     }
 
@@ -86,7 +86,7 @@ const EmailVerificationPage: React.FC = () => {
       console.log('Verification response:', response.data);
 
       if (response.status === 200) {
-        setMessage({ text: 'Email verified successfully! Redirecting to login...', type: 'success' });
+        setMessage({ text: 'E-poçt uğurla təsdiqləndi! Giriş səhifəsinə yönləndirilirsiniz...', type: 'success' });
         setTimeout(() => navigate('/login'), 2000);
       }
     } catch (error: any) {
@@ -110,17 +110,17 @@ const EmailVerificationPage: React.FC = () => {
           : error.response.data.message || JSON.stringify(error.response.data);
 
         if (errorMessage.includes('Invalid verification code')) {
-          setMessage({ text: 'The verification code is incorrect. Please check your email and try again.', type: 'danger' });
+          setMessage({ text: 'Təsdiq kodu yanlışdır. Zəhmət olmasa e-poçtunuzu yoxlayın və yenidən cəhd edin.', type: 'danger' });
         } else if (errorMessage.includes('expired')) {
-          setMessage({ text: 'The verification code has expired. Please request a new one.', type: 'danger' });
+          setMessage({ text: 'Təsdiq kodu müddəti bitib. Zəhmət olmasa yeni kod tələb edin.', type: 'danger' });
         } else if (errorMessage.includes('already verified')) {
-          setMessage({ text: 'This email is already verified. You can now login.', type: 'info' });
+          setMessage({ text: 'Bu e-poçt artıq təsdiqlənib. İndi daxil ola bilərsiniz.', type: 'info' });
           setTimeout(() => navigate('/login'), 2000);
         } else {
           setMessage({ text: errorMessage, type: 'danger' });
         }
       } else {
-        setMessage({ text: 'Verification failed. Please try again.', type: 'danger' });
+        setMessage({ text: 'Təsdiq uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.', type: 'danger' });
       }
     } finally {
       setIsLoading(false);
@@ -133,7 +133,7 @@ const EmailVerificationPage: React.FC = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card shadow-sm">
             <div className="card-body p-4">
-              <h2 className="text-center mb-4">Email Verification</h2>
+              <h2 className="text-center mb-4">E-poçt Təsdiqi</h2>
               {message && (
                 <Alert variant={message.type} className="mb-4">
                   {message.text}
@@ -142,7 +142,7 @@ const EmailVerificationPage: React.FC = () => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-4">
                   <Form.Label className="text-center d-block mb-3">
-                    Please enter the 4-digit code sent to your email
+                    E-poçtunuza göndərilən 4 rəqəmli kodu daxil edin
                   </Form.Label>
                   <div className="d-flex justify-content-center gap-2">
                     {[0, 1, 2, 3].map((index) => (
@@ -176,10 +176,10 @@ const EmailVerificationPage: React.FC = () => {
                         role="status"
                         aria-hidden="true"
                       />
-                      <span>Verifying...</span>
+                      <span>Təsdiqlənir...</span>
                     </>
                   ) : (
-                    'Verify Email'
+                    'E-poçtu Təsdiqlə'
                   )}
                 </Button>
               </Form>

@@ -82,7 +82,7 @@ const DashboardPage: React.FC = () => {
                 console.log('Active subscriptions:', subs);
                 
                 if (subs.length === 0) {
-                    setError('You don\'t have any active subscriptions. Please purchase a package to access lessons.');
+                    setError('Aktiv abunəliyiniz yoxdur. Dərslərə daxil olmaq üçün zəhmət olmasa paket alın.');
                     setLoading(false);
                     return;
                 }
@@ -100,7 +100,7 @@ const DashboardPage: React.FC = () => {
                 console.log('Course IDs:', courseIds);
                 
                 if (courseIds.length === 0) {
-                    setError('No courses found in your packages. Please contact support.');
+                    setError('Paketlərinizdə dərs tapılmadı. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.');
                     setLoading(false);
                     return;
                 }
@@ -132,7 +132,7 @@ const DashboardPage: React.FC = () => {
                 setLessonsMap(lessonsMapTemp);
             } catch (err) {
                 console.error('Failed to load dashboard data:', err);
-                setError('Failed to load your courses and lessons. Please try refreshing the page.');
+                setError('Dərsləriniz və məşğələləriniz yüklənə bilmədi. Zəhmət olmasa səhifəni yeniləyin.');
             } finally {
                 setLoading(false);
             }
@@ -145,7 +145,7 @@ const DashboardPage: React.FC = () => {
         return (
             <div className="text-center mt-5">
                 <Spinner animation="border" />
-                <p className="mt-2">Loading your courses and lessons...</p>
+                <p className="mt-2">Dərsləriniz və məşğələləriniz yüklənir...</p>
             </div>
         );
     }
@@ -154,7 +154,7 @@ const DashboardPage: React.FC = () => {
         return (
             <Container className="mt-4">
                 <Alert variant="warning">
-                    <Alert.Heading>Unable to load lessons</Alert.Heading>
+                    <Alert.Heading>Dərslər yüklənə bilmədi</Alert.Heading>
                     <p>{error}</p>
                     {error.includes('subscriptions') && (
                         <Button 
@@ -162,7 +162,7 @@ const DashboardPage: React.FC = () => {
                             onClick={() => navigate('/packages')}
                             className="mt-2"
                         >
-                            View Available Packages
+                            Mövcud Paketlərə Bax
                         </Button>
                     )}
                 </Alert>
@@ -177,8 +177,8 @@ const DashboardPage: React.FC = () => {
         return (
             <Container className="mt-4">
                 <Alert variant="info">
-                    <Alert.Heading>No Courses Available</Alert.Heading>
-                    <p>There are no courses available in your packages at the moment.</p>
+                    <Alert.Heading>Dərslər Mövcud Deyil</Alert.Heading>
+                    <p>Hal-hazırda paketlərinizdə heç bir dərs mövcud deyil.</p>
                 </Alert>
             </Container>
         );

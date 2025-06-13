@@ -37,16 +37,16 @@ const PackageSelectionPage: React.FC = () => {
   };
 
   if (status === 'loading') {
-    return <div>Loading packages...</div>;
+    return <div>Paketlər yüklənir...</div>;
   }
 
   if (status === 'failed') {
-    return <div>Error: {error}</div>;
+    return <div>Xəta: {error}</div>;
   }
 
   return (
     <Container className="mt-4">
-      <h2 className="mb-4">Select a Package</h2>
+      <h2 className="mb-4">Paket Seçin</h2>
       <Row>
         {packages.map((pkg) => (
           <Col key={pkg.id} md={4} className="mb-4">
@@ -54,14 +54,14 @@ const PackageSelectionPage: React.FC = () => {
               <Card.Body>
                 <Card.Title>{pkg.title}</Card.Title>
                 <Card.Text>{pkg.description}</Card.Text>
-                <Card.Text>Price: {pkg.price} AZN</Card.Text>
+                <Card.Text>Qiymət: {pkg.price} AZN</Card.Text>
                 <Button
                   variant="primary"
                   disabled={loading[pkg.id]}
                   onClick={() => handleSelectPackage(pkg.id, pkg.title, pkg.price)}
                   className="mt-2 w-100"
                 >
-                  {loading[pkg.id] ? 'Processing...' : 'Buy Now'}
+                  {loading[pkg.id] ? 'İşlənir...' : 'İndi Al'}
                 </Button>
               </Card.Body>
             </Card>

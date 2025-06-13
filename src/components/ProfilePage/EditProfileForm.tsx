@@ -71,7 +71,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             if (err.response?.data?.errors) {
                 setValidationErrors(err.response.data.errors);
             } else {
-                setError(err.response?.data?.message || 'An error occurred while updating the profile.');
+                setError(err.response?.data?.message || 'Profil yenilənərkən xəta baş verdi.');
             }
         }
     };
@@ -81,7 +81,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             {error && <Alert variant="danger">{error}</Alert>}
             
             <Form.Group className="mb-3">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>İstifadəçi adı</Form.Label>
                 <Form.Control
                     type="text"
                     name="Username"
@@ -95,7 +95,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>Ad</Form.Label>
                 <Form.Control
                     type="text"
                     name="FirstName"
@@ -109,7 +109,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Soyad</Form.Label>
                 <Form.Control
                     type="text"
                     name="LastName"
@@ -123,7 +123,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>E-poçt</Form.Label>
                 <Form.Control
                     type="email"
                     name="Email"
@@ -137,7 +137,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Phone Number</Form.Label>
+                <Form.Label>Telefon nömrəsi</Form.Label>
                 <Form.Control
                     type="tel"
                     name="PhoneNumber"
@@ -151,17 +151,17 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Group</Form.Label>
+                <Form.Label>Qrup</Form.Label>
                 <Form.Select
                     name="Group"
                     value={formData.Group}
                     onChange={handleChange}
                     isInvalid={!!getFieldError('Group')}
                 >
-                    <option value={1}>Group 1</option>
-                    <option value={2}>Group 2</option>
-                    <option value={3}>Group 3</option>
-                    <option value={4}>Group 4</option>
+                    <option value={1}>Qrup 1</option>
+                    <option value={2}>Qrup 2</option>
+                    <option value={3}>Qrup 3</option>
+                    <option value={4}>Qrup 4</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                     {getFieldError('Group')}
@@ -169,16 +169,16 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Sector</Form.Label>
+                <Form.Label>Sektor</Form.Label>
                 <Form.Select
                     name="Sector"
                     value={formData.Sector}
                     onChange={handleChange}
                     isInvalid={!!getFieldError('Sector')}
                 >
-                    <option value="Azerbaijani">Azerbaijani</option>
-                    <option value="Russian">Russian</option>
-                    <option value="English">English</option>
+                    <option value="Azerbaijani">Azərbaycan</option>
+                    <option value="Russian">Rus</option>
+                    <option value="English">İngilis</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                     {getFieldError('Sector')}
@@ -186,7 +186,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             </Form.Group>
 
             <Button variant="primary" type="submit">
-                Save Changes
+                Dəyişiklikləri Saxla
             </Button>
         </Form>
     );

@@ -265,6 +265,8 @@ const DashboardPage: React.FC = () => {
                                     <video
                                         key={selectedLesson.videoUrl}
                                         controls
+                                        preload="metadata"
+                                        playsInline
                                         style={{
                                             position: 'absolute',
                                             top: 0,
@@ -289,6 +291,8 @@ const DashboardPage: React.FC = () => {
                                             }
                                         }}
                                     >
+                                        <source src={selectedLesson.videoUrl} type="video/mp4; codecs=avc1.42E01E,mp4a.40.2" />
+                                        <source src={selectedLesson.videoUrl} type="video/webm; codecs=vp8,vorbis" />
                                         <source src={selectedLesson.videoUrl} type="video/mp4" />
                                         <source src={selectedLesson.videoUrl} type="video/webm" />
                                         Your browser does not support the video tag.

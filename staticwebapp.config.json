@@ -1,0 +1,10 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/css/*", "/js/*", "/api/*", "/*.{png,jpg,gif,svg,css,js,ico}"]
+  },
+  "globalHeaders": {
+    "cache-control": "no-cache",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://novademy-api.azurewebsites.net"
+  }
+}

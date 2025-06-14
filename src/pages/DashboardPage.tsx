@@ -295,7 +295,7 @@ const DashboardPage: React.FC = () => {
             </Row>
             {/* Floating Chatbot Button and Window */}
             <div style={{ position: 'fixed', bottom: 32, right: 32, zIndex: 9999 }}>
-                {!chatbotOpen && (
+                {selectedLesson && !chatbotOpen && (
                     <button
                         onClick={() => setChatbotOpen(true)}
                         style={{
@@ -317,7 +317,7 @@ const DashboardPage: React.FC = () => {
                         💬
                     </button>
                 )}
-                {chatbotOpen && (
+                {selectedLesson && chatbotOpen && (
                     <div style={{
                         width: 440,
                         height: 620,
@@ -346,7 +346,7 @@ const DashboardPage: React.FC = () => {
                             ×
                         </button>
                         <div style={{ flex: 1, padding: '32px 16px 16px 16px', overflow: 'auto' }}>
-                            <Chatbot lessonId={selectedLesson?.id || ''} />
+                            <Chatbot lessonId={selectedLesson.id} />
                         </div>
                     </div>
                 )}

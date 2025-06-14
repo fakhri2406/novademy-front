@@ -263,7 +263,7 @@ const DashboardPage: React.FC = () => {
                             {selectedLesson.videoUrl ? (
                                 <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: 18, marginBottom: 24, overflow: 'hidden', background: '#000' }}>
                                     <video
-                                        src={selectedLesson.videoUrl}
+                                        key={selectedLesson.videoUrl}
                                         controls
                                         style={{
                                             position: 'absolute',
@@ -272,10 +272,25 @@ const DashboardPage: React.FC = () => {
                                             width: '100%',
                                             height: '100%',
                                             borderRadius: 18,
-                                            objectFit: 'cover',
+                                            objectFit: 'contain',
                                             background: '#000'
                                         }}
+                                        onError={(e) => {
+                                            console.error('Video playback error:', e);
+                                            const videoElement = e.target as HTMLVideoElement;
+                                            videoElement.style.display = 'none';
+                                            const container = videoElement.parentElement;
+                                            if (container) {
+                                                container.innerHTML = `
+                                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #721c24; font-weight: 600; background: #f8d7da; border-radius: 18px;">
+                                                        Video yüklənmədi. Zəhmət olmasa daha sonra yenidən cəhd edin.
+                                                    </div>
+                                                `;
+                                            }
+                                        }}
                                     >
+                                        <source src={selectedLesson.videoUrl} type="video/mp4" />
+                                        <source src={selectedLesson.videoUrl} type="video/webm" />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>

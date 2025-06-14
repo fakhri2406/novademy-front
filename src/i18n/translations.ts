@@ -84,6 +84,9 @@ export const translations = {
     thankYou: 'Təşəkkür edirik!',
     packageDescription: 'Paket təsviri',
     loadingPackages: 'Paketlər yüklənir...',
+    noAvailablePackages: 'Mövcud Paket Yoxdur',
+    allPackagesPurchased: 'Bütün paketlər artıq alınıb.',
+    goToDashboard: 'İdarəetmə Panelinə Get',
 
     // Dashboard
     myCourses: 'Dərslərim',
@@ -247,6 +250,9 @@ export const translations = {
     thankYou: 'Thank You!',
     packageDescription: 'Package Description',
     loadingPackages: 'Loading packages...',
+    noAvailablePackages: 'No Available Packages',
+    allPackagesPurchased: 'All packages have been purchased.',
+    goToDashboard: 'Go to Dashboard',
 
     // Dashboard
     myCourses: 'My Courses',
@@ -410,6 +416,9 @@ export const translations = {
     thankYou: 'Спасибо!',
     packageDescription: 'Описание пакета',
     loadingPackages: 'Загрузка пакетов...',
+    noAvailablePackages: 'Нет доступных пакетов',
+    allPackagesPurchased: 'Все пакеты уже приобретены.',
+    goToDashboard: 'Перейти в панель управления',
 
     // Dashboard
     myCourses: 'Мои курсы',

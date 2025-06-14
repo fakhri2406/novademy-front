@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { Card, Button, Typography, Spin, message, Alert, Modal } from 'antd';
 // @ts-ignore
 import { CreditCardOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { getUserIdFromToken } from '../utils/auth';
+import api from '../services/api';
 
 const { Title, Text } = Typography;
 
@@ -58,7 +60,14 @@ const Payment: React.FC = () => {
     try {
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-      
+
+      // Create subscription in backend
+      const userId = getUserIdFromToken();
+      if (!userId) throw new Error('İstifadəçi tapılmadı. Zəhmət olmasa yenidən daxil olun.');
+      await api.post('/subscription', {
+        packageId: paymentDetails.packageId,
+        userId
+      });
       // Show success modal
       setShowSuccessModal(true);
       

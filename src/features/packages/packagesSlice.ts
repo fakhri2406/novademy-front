@@ -7,6 +7,7 @@ interface Package {
     description: string;
     price: number;
     imageUrl?: string;
+    courseIds: string[];
 }
 
 interface PackagesState {

@@ -16,6 +16,8 @@ export const translations = {
     sort: 'Sırala',
     view: 'Bax',
     more: 'Ətraflı',
+    continue: 'Davam et',
+    mostPopular: 'ƏN SƏRFƏLİ!',
 
     // Navigation
     home: 'Ana Səhifə',
@@ -182,6 +184,8 @@ export const translations = {
     sort: 'Sort',
     view: 'View',
     more: 'More',
+    continue: 'Continue',
+    mostPopular: 'Most Popular!',
 
     // Navigation
     home: 'Home',
@@ -348,6 +352,8 @@ export const translations = {
     sort: 'Сортировать',
     view: 'Просмотр',
     more: 'Еще',
+    continue: 'Продолжить',
+    mostPopular: 'Самый выгодный!',
 
     // Navigation
     home: 'Главная',

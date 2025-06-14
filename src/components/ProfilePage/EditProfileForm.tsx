@@ -110,25 +110,29 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
 
             const response = await api.put(`/user/${userId}`, formDataToSend);
             
-            if (response.status === 200) {
-                // After successful update, refresh the token
-                const refreshToken = getRefreshToken();
-                if (refreshToken) {
+            // After successful update, refresh the token
+            const refreshToken = getRefreshToken();
+            if (refreshToken) {
+                try {
                     const tokenResponse = await api.post('/auth/refresh', { token: refreshToken });
                     if (tokenResponse.data?.accessToken) {
                         setAccessToken(tokenResponse.data.accessToken);
                     }
+                } catch (tokenError) {
+                    console.warn('Token refresh failed:', tokenError);
+                    // Don't show error to user if token refresh fails, as profile update was successful
                 }
-                onSuccess();
-            } else {
-                throw new Error('Failed to update profile');
             }
+            
+            onSuccess();
         } catch (err: any) {
             console.error('Profile update error:', err);
             if (err.response?.data?.errors) {
                 setValidationErrors(err.response.data.errors);
             } else if (err.response?.data?.message) {
                 setError(err.response.data.message);
+            } else if (err.message) {
+                setError(err.message);
             } else {
                 setError(t('profileUpdateError'));
             }

@@ -7,6 +7,7 @@ import { Card, Button, Typography, Spin, message, Alert, Modal } from 'antd';
 import { CreditCardOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { getUserIdFromToken } from '../utils/auth';
 import api from '../services/api';
+import { useTranslation } from '../i18n/useTranslation';
 
 const { Title, Text } = Typography;
 
@@ -25,6 +26,7 @@ const Payment: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     console.log('Payment page location state:', location.state);
@@ -33,24 +35,24 @@ const Payment: React.FC = () => {
     const details = location.state as PaymentDetails;
     if (!details) {
       console.error('No payment details found in location state');
-      setError('Ödəniş məlumatları tapılmadı. Zəhmət olmasa əvvəlcə paket seçin.');
+      setError(t('paymentDetailsNotFound'));
       return;
     }
 
     // Validate payment details
     if (!details.packageId || !details.amount || !details.packageName) {
       console.error('Invalid payment details:', details);
-      setError('Yanlış ödəniş məlumatları. Zəhmət olmasa paketi yenidən seçin.');
+      setError(t('invalidPaymentDetails'));
       return;
     }
 
     console.log('Setting payment details:', details);
     setPaymentDetails(details);
-  }, [location.state]);
+  }, [location.state, t]);
 
   const handlePayment = async () => {
     if (!paymentDetails) {
-      setError('Ödəniş məlumatları yoxdur. Zəhmət olmasa yenidən cəhd edin.');
+      setError(t('noPaymentDetails'));
       return;
     }
     
@@ -63,7 +65,7 @@ const Payment: React.FC = () => {
 
       // Create subscription in backend
       const userId = getUserIdFromToken();
-      if (!userId) throw new Error('İstifadəçi tapılmadı. Zəhmət olmasa yenidən daxil olun.');
+      if (!userId) throw new Error(t('userNotFound'));
       await api.post('/subscription', {
         packageId: paymentDetails.packageId,
         userId
@@ -73,8 +75,8 @@ const Payment: React.FC = () => {
       
     } catch (error) {
       console.error('Payment error:', error);
-      setError(error instanceof Error ? error.message : 'Ödəniş emal edilə bilmədi. Zəhmət olmasa yenidən cəhd edin.');
-      message.error('Ödəniş emal edilə bilmədi. Zəhmət olmasa yenidən cəhd edin.');
+      setError(error instanceof Error ? error.message : t('paymentFailed'));
+      message.error(t('paymentFailed'));
     } finally {
       setLoading(false);
     }
@@ -90,13 +92,13 @@ const Payment: React.FC = () => {
     return (
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px' }}>
         <Alert
-          message="Ödəniş Xətası"
+          message={t('paymentError')}
           description={error}
           type="error"
           showIcon
           action={
             <Button type="primary" onClick={() => navigate('/packages')}>
-              Paketlərə Qayıt
+              {t('backToPackages')}
             </Button>
           }
         />
@@ -109,7 +111,7 @@ const Payment: React.FC = () => {
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px', textAlign: 'center' }}>
         <Spin size="large" />
         <div style={{ marginTop: 16 }}>
-          <Text>Ödəniş məlumatları yüklənir...</Text>
+          <Text>{t('loadingPaymentDetails')}</Text>
         </div>
       </div>
     );
@@ -119,15 +121,15 @@ const Payment: React.FC = () => {
     <>
       <div style={{ maxWidth: 600, margin: '40px auto', padding: '0 20px' }}>
         <Card>
-          <Title level={2}>Ödəniş Məlumatları</Title>
+          <Title level={2}>{t('paymentDetails')}</Title>
           <div style={{ marginBottom: 24 }}>
-            <Text strong>Paket:</Text> {paymentDetails.packageName}
+            <Text strong>{t('package')}:</Text> {paymentDetails.packageName}
           </div>
           <div style={{ marginBottom: 24 }}>
-            <Text strong>Məbləğ:</Text> {paymentDetails.amount} AZN
+            <Text strong>{t('amount')}:</Text> {paymentDetails.amount} AZN
           </div>
           <div style={{ marginBottom: 24 }}>
-            <Text type="secondary">Bu demo ödənişdir. Heç bir real ödəniş emal edilməyəcək.</Text>
+            <Text type="secondary">{t('demoPaymentNote')}</Text>
           </div>
           <Button
             type="primary"
@@ -137,7 +139,7 @@ const Payment: React.FC = () => {
             loading={loading}
             onClick={handlePayment}
           >
-            {loading ? 'Ödəniş Emal Edilir...' : 'Ödənişə Davam Et (Demo)'}
+            {loading ? t('processingPayment') : t('proceedToPaymentDemo')}
           </Button>
           <Button
             type="link"
@@ -145,31 +147,33 @@ const Payment: React.FC = () => {
             onClick={() => navigate('/packages')}
             style={{ marginTop: 16 }}
           >
-            Ləğv Et və Paketlərə Qayıt
+            {t('cancelAndBackToPackages')}
           </Button>
         </Card>
       </div>
 
       <Modal
-        title="Ödəniş Uğurlu Oldu"
+        title={t('paymentSuccess')}
         open={showSuccessModal}
         onOk={handleSuccessModalClose}
         onCancel={handleSuccessModalClose}
         footer={[
           <Button key="dashboard" type="primary" onClick={handleSuccessModalClose}>
-            İdarəetmə Paneline Get
+            {t('goToDashboard')}
           </Button>
         ]}
       >
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <CheckCircleOutlined style={{ fontSize: 48, color: '#52c41a', marginBottom: 16 }} />
-          <Title level={4}>Alış-verişiniz üçün təşəkkür edirik!</Title>
+          <Title level={4}>{t('thankYouForPurchase')}</Title>
           <Text>
-            {paymentDetails.packageName} üçün {paymentDetails.amount} AZN məbləğində ödənişiniz uğurla emal edildi.
+            {t('paymentSuccessMessage')
+              .replace('{{packageName}}', paymentDetails.packageName)
+              .replace('{{amount}}', String(paymentDetails.amount))}
           </Text>
           <br />
           <Text type="secondary">
-            (Qeyd: Bu demo ödənişdir. Heç bir real ödəniş emal edilmədi.)
+            {t('demoPaymentNote')}
           </Text>
         </div>
       </Modal>

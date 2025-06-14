@@ -166,6 +166,23 @@ export const translations = {
     noCoursesAvailable: 'Dərslər Mövcud Deyil',
     selectLesson: 'Dərs seçin',
     selectLessonDescription: 'Sol tərəfdən bir dərs seçin',
+
+    // Payment Page
+    paymentDetailsNotFound: 'Ödəniş məlumatları tapılmadı. Zəhmət olmasa əvvəlcə paket seçin.',
+    invalidPaymentDetails: 'Yanlış ödəniş məlumatları. Zəhmət olmasa paketi yenidən seçin.',
+    noPaymentDetails: 'Ödəniş məlumatları yoxdur. Zəhmət olmasa yenidən cəhd edin.',
+    userNotFound: 'İstifadəçi tapılmadı. Zəhmət olmasa yenidən daxil olun.',
+    paymentFailed: 'Ödəniş emal edilə bilmədi. Zəhmət olmasa yenidən cəhd edin.',
+    paymentError: 'Ödəniş Xətası',
+    backToPackages: 'Paketlərə Qayıt',
+    loadingPaymentDetails: 'Ödəniş məlumatları yüklənir...',
+    demoPaymentNote: 'Bu demo ödənişdir. Heç bir real ödəniş emal edilməyəcək.',
+    processingPayment: 'Ödəniş Emal Edilir...',
+    proceedToPaymentDemo: 'Ödənişə Davam Et (Demo)',
+    cancelAndBackToPackages: 'Ləğv Et və Paketlərə Qayıt',
+    paymentSuccess: 'Ödəniş Uğurlu Oldu',
+    thankYouForPurchase: 'Alış-verişiniz üçün təşəkkür edirik!',
+    paymentSuccessMessage: '{{packageName}} üçün {{amount}} AZN məbləğində ödənişiniz uğurla emal edildi.',
   },
   en: {
     // Common
@@ -334,6 +351,23 @@ export const translations = {
     noCoursesAvailable: 'No Courses Available',
     selectLesson: 'Select a Lesson',
     selectLessonDescription: 'Choose a lesson from the left side',
+
+    // Payment Page
+    paymentDetailsNotFound: 'Payment details not found. Please select a package first.',
+    invalidPaymentDetails: 'Invalid payment details. Please select the package again.',
+    noPaymentDetails: 'No payment details. Please try again.',
+    userNotFound: 'User not found. Please log in again.',
+    paymentFailed: 'Payment could not be processed. Please try again.',
+    paymentError: 'Payment Error',
+    backToPackages: 'Back to Packages',
+    loadingPaymentDetails: 'Loading payment details...',
+    demoPaymentNote: 'This is a demo payment. No real payment will be processed.',
+    processingPayment: 'Processing Payment...',
+    proceedToPaymentDemo: 'Proceed to Payment (Demo)',
+    cancelAndBackToPackages: 'Cancel and Back to Packages',
+    paymentSuccess: 'Payment Successful',
+    thankYouForPurchase: 'Thank you for your purchase!',
+    paymentSuccessMessage: 'Your payment of {{amount}} AZN for {{packageName}} was successfully processed.',
   },
   ru: {
     // Common
@@ -502,5 +536,22 @@ export const translations = {
     noCoursesAvailable: 'Нет доступных курсов',
     selectLesson: 'Выберите урок',
     selectLessonDescription: 'Выберите урок из списка слева',
+
+    // Payment Page
+    paymentDetailsNotFound: 'Данные об оплате не найдены. Пожалуйста, сначала выберите пакет.',
+    invalidPaymentDetails: 'Неверные данные об оплате. Пожалуйста, выберите пакет заново.',
+    noPaymentDetails: 'Нет данных об оплате. Пожалуйста, попробуйте снова.',
+    userNotFound: 'Пользователь не найден. Пожалуйста, войдите снова.',
+    paymentFailed: 'Платеж не может быть обработан. Пожалуйста, попробуйте снова.',
+    paymentError: 'Ошибка оплаты',
+    backToPackages: 'Назад к пакетам',
+    loadingPaymentDetails: 'Загрузка данных об оплате...',
+    demoPaymentNote: 'Это демонстрационный платеж. Реальный платеж не будет обработан.',
+    processingPayment: 'Обработка платежа...',
+    proceedToPaymentDemo: 'Перейти к оплате (Демо)',
+    cancelAndBackToPackages: 'Отмена и назад к пакетам',
+    paymentSuccess: 'Платеж успешен',
+    thankYouForPurchase: 'Спасибо за покупку!',
+    paymentSuccessMessage: 'Ваш платеж в размере {{amount}} AZN за {{packageName}} был успешно обработан.',
   },
 }; 

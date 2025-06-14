@@ -14,15 +14,34 @@ interface EditProfileFormProps {
         phoneNumber: string;
         group: number;
         sector: string;
+        profilePictureUrl?: string;
     };
     userId: string;
     onSuccess: () => void;
 }
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, onSuccess }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    // Sector mappings
+    const sectorMap: { [key: string]: number } = {
+        'Azerbaijani': 0,
+        'Russian': 1,
+        'English': 2
+    };
+
+    const reverseSectorMap: { [key: number]: string } = {
+        0: 'Azerbaijani',
+        1: 'Russian',
+        2: 'English'
+    };
+
+    // Convert initial sector to string if it's a number
+    const initialSector = typeof initialData.sector === 'number' 
+        ? reverseSectorMap[initialData.sector] || 'Azerbaijani'
+        : initialData.sector;
+
     const [formData, setFormData] = useState({
         Username: initialData.username,
         FirstName: initialData.firstName,
@@ -30,10 +49,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
         Email: initialData.email,
         PhoneNumber: initialData.phoneNumber,
         Group: initialData.group,
-        Sector: initialData.sector
+        Sector: initialSector
     });
+    const [profilePicture, setProfilePicture] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | undefined>(initialData.profilePictureUrl);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -41,6 +63,20 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setProfilePicture(file);
+            
+            // Create preview URL
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const getFieldError = (fieldName: string): string | undefined => {
@@ -51,31 +87,53 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
         e.preventDefault();
         setError(null);
         setValidationErrors({});
+        setIsSubmitting(true);
 
         try {
             const formDataToSend = new FormData();
+            
+            // Convert sector to number based on selection
+            const sectorNumber = sectorMap[formData.Sector] ?? 0;
+            
+            // Append all form fields
             Object.entries(formData).forEach(([key, value]) => {
-                formDataToSend.append(key, value.toString());
+                if (key === 'Sector') {
+                    formDataToSend.append(key, sectorNumber.toString());
+                } else {
+                    formDataToSend.append(key, value.toString());
+                }
             });
 
-            await api.put(`/user/${userId}`, formDataToSend);
-            
-            // After successful update, refresh the token
-            const refreshToken = getRefreshToken();
-            if (refreshToken) {
-                const tokenResponse = await api.post('/auth/refresh', { token: refreshToken });
-                if (tokenResponse.data?.accessToken) {
-                    setAccessToken(tokenResponse.data.accessToken);
-                }
+            if (profilePicture) {
+                formDataToSend.append('ProfilePicture', profilePicture);
             }
 
-            onSuccess();
+            const response = await api.put(`/user/${userId}`, formDataToSend);
+            
+            if (response.status === 200) {
+                // After successful update, refresh the token
+                const refreshToken = getRefreshToken();
+                if (refreshToken) {
+                    const tokenResponse = await api.post('/auth/refresh', { token: refreshToken });
+                    if (tokenResponse.data?.accessToken) {
+                        setAccessToken(tokenResponse.data.accessToken);
+                    }
+                }
+                onSuccess();
+            } else {
+                throw new Error('Failed to update profile');
+            }
         } catch (err: any) {
+            console.error('Profile update error:', err);
             if (err.response?.data?.errors) {
                 setValidationErrors(err.response.data.errors);
+            } else if (err.response?.data?.message) {
+                setError(err.response.data.message);
             } else {
-                setError(err.response?.data?.message || t('profileUpdateError'));
+                setError(t('profileUpdateError'));
             }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -83,6 +141,34 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
         <Form onSubmit={handleSubmit}>
             {error && <Alert variant="danger">{error}</Alert>}
             
+            <div className="text-center mb-4">
+                {previewUrl ? (
+                    <img
+                        src={previewUrl}
+                        alt={t('profile')}
+                        className="rounded-circle"
+                        style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                    />
+                ) : (
+                    <div
+                        className="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto"
+                        style={{ width: '150px', height: '150px' }}
+                    >
+                        <span className="text-white h1">
+                            {formData.FirstName[0]}{formData.LastName[0]}
+                        </span>
+                    </div>
+                )}
+                <Form.Group className="mt-3">
+                    <Form.Label>{t('profilePicture')}</Form.Label>
+                    <Form.Control
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                    />
+                </Form.Group>
+            </div>
+
             <Form.Group className="mb-3">
                 <Form.Label>{t('username')}</Form.Label>
                 <Form.Control
@@ -188,8 +274,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
                 </Form.Control.Feedback>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-                {t('saveChanges')}
+            <Button 
+                variant="primary" 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-100"
+            >
+                {isSubmitting ? t('saving') : t('saveChanges')}
             </Button>
         </Form>
     );

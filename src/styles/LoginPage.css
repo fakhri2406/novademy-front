@@ -43,8 +43,8 @@
 }
 
 .btn-login, .btn-primary {
-  background: #c33764;
-  color: #fff;
+  background: #ff0a54 !important;
+  color: #fff !important;
   font-weight: 700;
   border-radius: 12px;
   padding: 12px 0;
@@ -56,7 +56,14 @@
 }
 
 .btn-login:hover, .btn-primary:hover {
-  background: #a8325e;
+  background: #c81d8f !important;
+  color: #fff !important;
+}
+
+.btn-login:disabled, .btn-primary:disabled {
+  background: #ffb3c6 !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
 }
 
 .login-link,

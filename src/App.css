@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.btn, .btn-primary, button {
+  background: #ff0a54 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.btn:hover, .btn-primary:hover, button:hover {
+  background: #c81d8f !important;
+  color: #fff !important;
+}
+
+.btn:disabled, .btn-primary:disabled, button:disabled {
+  background: #ffb3c6 !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+}

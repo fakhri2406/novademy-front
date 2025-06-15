@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPackages } from '../features/packages/packagesSlice';
 import { RootState, AppDispatch } from '../store';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../i18n/useTranslation';
+import api from '../services/api';
+import { getUserIdFromToken } from '../utils/auth';
+import './PackageSelectionPage.css';
+
+interface Subscription {
+    id: string;
+    userId: string;
+    packageId: string;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+}
 
 const PackageSelectionPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,6 +23,10 @@ const PackageSelectionPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
+  const [userSubscriptions, setUserSubscriptions] = useState<Subscription[]>([]);
+  const [isLoadingSubscriptions, setIsLoadingSubscriptions] = useState(true);
+  const [courses, setCourses] = useState<{ id: string; title: string }[]>([]);
+  const [isLoadingCourses, setIsLoadingCourses] = useState(true);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -19,10 +34,45 @@ const PackageSelectionPage: React.FC = () => {
     }
   }, [status, dispatch]);
 
+  useEffect(() => {
+    const fetchUserSubscriptions = async () => {
+      const userId = getUserIdFromToken();
+      if (!userId) {
+        navigate('/login');
+        return;
+      }
+
+      try {
+        const response = await api.get<Subscription[]>(`/subscription/active/${userId}`);
+        setUserSubscriptions(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user subscriptions:', error);
+      } finally {
+        setIsLoadingSubscriptions(false);
+      }
+    };
+
+    fetchUserSubscriptions();
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setIsLoadingCourses(true);
+        const response = await api.get('/course');
+        setCourses(response.data);
+      } catch (error) {
+        console.error('Failed to fetch courses:', error);
+      } finally {
+        setIsLoadingCourses(false);
+      }
+    };
+    fetchCourses();
+  }, []);
+
   const handleSelectPackage = (packageId: string, packageTitle: string, price: number) => {
     setLoading((prev) => ({ ...prev, [packageId]: true }));
     try {
-      // Navigate to payment page with package details
       navigate('/payment', {
         state: {
           packageId,
@@ -37,39 +87,108 @@ const PackageSelectionPage: React.FC = () => {
     }
   };
 
-  if (status === 'loading') {
-    return <div>{t('loadingPackages')}</div>;
+  if (status === 'loading' || isLoadingSubscriptions || isLoadingCourses) {
+    return (
+      <div className="package-bg">
+        <div className="package-center">
+          <div className="package-spinner" />
+          <p className="package-loading-text">{t('loadingPackages')}</p>
+        </div>
+      </div>
+    );
   }
 
   if (status === 'failed') {
-    return <div>{t('error')}: {error}</div>;
+    return (
+      <div className="package-bg">
+        <div className="package-center">
+          <div className="package-error">
+            {t('error')}: {error}
+          </div>
+        </div>
+      </div>
+    );
   }
 
+  const availablePackages = packages.filter(
+    pkg => !userSubscriptions.some(sub => sub.packageId === pkg.id)
+  );
+
+  if (availablePackages.length === 0) {
+    return (
+      <div className="package-bg">
+        <div className="package-center">
+          <div className="package-info">
+            <h3>{t('noAvailablePackages')}</h3>
+            <p>{t('allPackagesPurchased')}</p>
+            <button 
+              className="package-btn" 
+              onClick={() => navigate('/dashboard')}
+            >
+              {t('goToDashboard')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // For demo: show only first two packages in the new design
+  const [first, second] = availablePackages;
+
   return (
-    <Container className="mt-4">
-      <h2 className="mb-4">{t('selectPackage')}</h2>
-      <Row>
-        {packages.map((pkg) => (
-          <Col key={pkg.id} md={4} className="mb-4">
-            <Card className="h-100">
-              <Card.Body>
-                <Card.Title>{pkg.title}</Card.Title>
-                <Card.Text>{t('packageDescription')}: {pkg.description}</Card.Text>
-                <Card.Text>{t('price')}: {pkg.price} AZN</Card.Text>
-                <Button
-                  variant="primary"
-                  disabled={loading[pkg.id]}
-                  onClick={() => handleSelectPackage(pkg.id, pkg.title, pkg.price)}
-                  className="mt-2 w-100"
-                >
-                  {loading[pkg.id] ? t('processing') : t('buyNow')}
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div className="package-bg">
+      <div className="package-center">
+        <h1 className="package-title">{t('selectPackage')}</h1>
+        <div className="package-cards-row">
+          {first && (
+            <div className="package-card">
+              <div className="package-price">{first.price} AZN</div>
+              <div className="package-name">{first.title}</div>
+              <div className="package-description">{first.description}</div>
+              {first.courseIds && first.courseIds.length > 0 && (
+                <ul className="package-courses-list">
+                  {first.courseIds.map((cid: string) => {
+                    const course = courses.find(c => c.id === cid);
+                    return course ? <li key={cid}>{course.title}</li> : null;
+                  })}
+                </ul>
+              )}
+              <button
+                className="package-btn"
+                disabled={loading[first.id]}
+                onClick={() => handleSelectPackage(first.id, first.title, first.price)}
+              >
+                {loading[first.id] ? t('processing') : t('continue')}
+              </button>
+            </div>
+          )}
+          {second && (
+            <div className="package-card popular">
+              <div className="package-popular-badge">{t('mostPopular')}</div>
+              <div className="package-price">{second.price} AZN</div>
+              <div className="package-name">{second.title}</div>
+              <div className="package-description">{second.description}</div>
+              {second.courseIds && second.courseIds.length > 0 && (
+                <ul className="package-courses-list">
+                  {second.courseIds.map((cid: string) => {
+                    const course = courses.find(c => c.id === cid);
+                    return course ? <li key={cid}>{course.title}</li> : null;
+                  })}
+                </ul>
+              )}
+              <button
+                className="package-btn"
+                disabled={loading[second.id]}
+                onClick={() => handleSelectPackage(second.id, second.title, second.price)}
+              >
+                {loading[second.id] ? t('processing') : t('continue')}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -263,8 +263,10 @@ const DashboardPage: React.FC = () => {
                             {selectedLesson.videoUrl ? (
                                 <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', borderRadius: 18, marginBottom: 24, overflow: 'hidden', background: '#000' }}>
                                     <video
-                                        src={selectedLesson.videoUrl}
+                                        key={selectedLesson.videoUrl}
                                         controls
+                                        preload="metadata"
+                                        playsInline
                                         style={{
                                             position: 'absolute',
                                             top: 0,
@@ -272,10 +274,27 @@ const DashboardPage: React.FC = () => {
                                             width: '100%',
                                             height: '100%',
                                             borderRadius: 18,
-                                            objectFit: 'cover',
+                                            objectFit: 'contain',
                                             background: '#000'
                                         }}
+                                        onError={(e) => {
+                                            console.error('Video playback error:', e);
+                                            const videoElement = e.target as HTMLVideoElement;
+                                            videoElement.style.display = 'none';
+                                            const container = videoElement.parentElement;
+                                            if (container) {
+                                                container.innerHTML = `
+                                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #721c24; font-weight: 600; background: #f8d7da; border-radius: 18px;">
+                                                        Video yüklənmədi. Zəhmət olmasa daha sonra yenidən cəhd edin.
+                                                    </div>
+                                                `;
+                                            }
+                                        }}
                                     >
+                                        <source src={selectedLesson.videoUrl} type="video/mp4; codecs=avc1.42E01E,mp4a.40.2" />
+                                        <source src={selectedLesson.videoUrl} type="video/webm; codecs=vp8,vorbis" />
+                                        <source src={selectedLesson.videoUrl} type="video/mp4" />
+                                        <source src={selectedLesson.videoUrl} type="video/webm" />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -295,7 +314,7 @@ const DashboardPage: React.FC = () => {
             </Row>
             {/* Floating Chatbot Button and Window */}
             <div style={{ position: 'fixed', bottom: 32, right: 32, zIndex: 9999 }}>
-                {!chatbotOpen && (
+                {selectedLesson && !chatbotOpen && (
                     <button
                         onClick={() => setChatbotOpen(true)}
                         style={{
@@ -317,7 +336,7 @@ const DashboardPage: React.FC = () => {
                         💬
                     </button>
                 )}
-                {chatbotOpen && (
+                {selectedLesson && chatbotOpen && (
                     <div style={{
                         width: 440,
                         height: 620,
@@ -346,7 +365,7 @@ const DashboardPage: React.FC = () => {
                             ×
                         </button>
                         <div style={{ flex: 1, padding: '32px 16px 16px 16px', overflow: 'auto' }}>
-                            <Chatbot lessonId={selectedLesson?.id || ''} />
+                            <Chatbot lessonId={selectedLesson.id} />
                         </div>
                     </div>
                 )}

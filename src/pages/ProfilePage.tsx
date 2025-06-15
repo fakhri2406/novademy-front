@@ -83,26 +83,6 @@ const ProfilePage: React.FC = () => {
                 <Col md={8}>
                     <Card>
                         <Card.Body>
-                            <div className="text-center mb-4">
-                                {userData.profilePictureUrl ? (
-                                    <img
-                                        src={userData.profilePictureUrl}
-                                        alt={t('profile')}
-                                        className="rounded-circle"
-                                        style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-                                    />
-                                ) : (
-                                    <div
-                                        className="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto"
-                                        style={{ width: '150px', height: '150px' }}
-                                    >
-                                        <span className="text-white h1">
-                                            {userData.firstName[0]}{userData.lastName[0]}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-
                             {isEditing ? (
                                 <EditProfileForm
                                     initialData={userData}
@@ -114,6 +94,25 @@ const ProfilePage: React.FC = () => {
                                 />
                             ) : (
                                 <>
+                                    <div className="text-center mb-4">
+                                        {userData.profilePictureUrl ? (
+                                            <img
+                                                src={userData.profilePictureUrl}
+                                                alt={t('profile')}
+                                                className="rounded-circle"
+                                                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                                            />
+                                        ) : (
+                                            <div
+                                                className="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto"
+                                                style={{ width: '150px', height: '150px' }}
+                                            >
+                                                <span className="text-white h1">
+                                                    {userData.firstName[0]}{userData.lastName[0]}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
                                     <div className="mb-4">
                                         <h3 className="text-center mb-4">{t('profileInformation')}</h3>
                                         <Row>

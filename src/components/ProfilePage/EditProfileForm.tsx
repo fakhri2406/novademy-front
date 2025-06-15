@@ -21,6 +21,7 @@ interface EditProfileFormProps {
 }
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, onSuccess }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -108,6 +109,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, userId, 
                 formDataToSend.append('ProfilePicture', profilePicture);
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const response = await api.put(`/user/${userId}`, formDataToSend);
             
             // After successful update, refresh the token

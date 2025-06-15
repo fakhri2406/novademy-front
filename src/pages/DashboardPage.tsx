@@ -73,6 +73,8 @@ const DashboardPage: React.FC = () => {
     const userId = getUserIdFromToken();
 
     useEffect(() => {
+        console.log('DashboardPage useEffect triggered with userId:', userId);
+        console.log('Dependencies:', { userId, navigate: navigate.toString(), t: t.toString() });
         if (!userId) {
             navigate('/login');
             return;
@@ -145,7 +147,7 @@ const DashboardPage: React.FC = () => {
         };
 
         fetchData();
-    }, [userId, navigate, t]);
+    }, []);
 
     if (loading) {
         return (
